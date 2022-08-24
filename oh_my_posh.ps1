@@ -67,11 +67,11 @@ Remove-Item -Path "$DownloadsFolder\FiraCode.zip", "$DownloadsFolder\FiraCode" -
 $Theme = "M365Princess"
 if (-not (Test-Path -Path $PROFILE))
 {
-	Set-Content -Path $PROFILE -Value "oh-my-posh init pwsh --config `"$($env:POSH_THEMES_PATH)\$($Theme).omp.json`" | Invoke-Expression" -Force
+	Set-Content -Path $PROFILE -Value '`noh-my-posh init pwsh --config "$env:POSH_THEMES_PATH\$($Theme).omp.json" | Invoke-Expression' -Force
 }
 else
 {
-	Add-Content -Path $PROFILE -Value "`noh-my-posh init pwsh --config `"$($env:POSH_THEMES_PATH)\$($Theme).omp.json`" | Invoke-Expression" -Force
+	Add-Content -Path $PROFILE -Value '`noh-my-posh init pwsh --config "$env:POSH_THEMES_PATH\$($Theme).omp.json" | Invoke-Expression' -Force
 }
 
 # https://www.powershellgallery.com/packages/terminal-icons
