@@ -147,11 +147,11 @@ else
 
 #region defaults
 # Set Windows95.gif as a background image
-# https://github.com/farag2/Utilities/tree/master/Windows_Terminal
+# https://github.com/farag2/Windows_Terminal
 if (-not (Test-Path -Path "$env:LOCALAPPDATA\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\RoamingState\Windows95.gif"))
 {
 	$Parameters = @{
-		Uri             = "https://github.com/farag2/Utilities/raw/master/Windows_Terminal/Windows95.gif"
+		Uri             = "https://raw.githubusercontent.com/farag2/Windows_Terminal/main/Windows95.gif"
 		OutFile         = "$env:LOCALAPPDATA\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\RoamingState\Windows95.gif"
 		UseBasicParsing = $true
 		Verbose         = $true
