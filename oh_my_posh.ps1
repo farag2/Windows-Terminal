@@ -1,3 +1,14 @@
+#Requires -RunAsAdministrator
+
+Clear-Host
+
+if ($psISE)
+{
+	exit
+}
+
+[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+
 # https://github.com/JanDeDobbeleer/oh-my-posh
 winget install oh-my-posh --source winget --exact --accept-source-agreements
 
@@ -66,11 +77,11 @@ Remove-Item -Path "$DownloadsFolder\FiraCode.zip", "$DownloadsFolder\FiraCode" -
 # %USERPROFILE%\Documents\WindowsPowerShell
 if (-not (Test-Path -Path $PROFILE))
 {
-	Set-Content -Path $PROFILE -Value '`noh-my-posh init pwsh --config "$env:POSH_THEMES_PATH\M365Princess.json" | Invoke-Expression' -Force
+	Set-Content -Path $PROFILE -Value 'oh-my-posh init pwsh --config "$env:POSH_THEMES_PATH\M365Princess.json" | Invoke-Expression' -Force
 }
 else
 {
-	Add-Content -Path $PROFILE -Value '`noh-my-posh init pwsh --config "$env:POSH_THEMES_PATH\M365Princess.json" | Invoke-Expression' -Force
+	Add-Content -Path $PROFILE -Value 'oh-my-posh init pwsh --config "$env:POSH_THEMES_PATH\M365Princess.json" | Invoke-Expression' -Force
 }
 
 # https://www.powershellgallery.com/packages/terminal-icons
@@ -80,3 +91,31 @@ Install-Module -Name Terminal-Icons -Force
 Add-Content -Path $PROFILE -Value "`nImport-Module -Name Terminal-Icons" -Force
 
 Invoke-Item -Path $PROFILE
+
+try
+{
+	$Terminal = Get-Content -Path $settings -Encoding UTF8 -Force | ConvertFrom-Json
+}
+catch [System.Exception]
+{
+	Write-Warning -Message "JSON is not valid!"
+
+	Invoke-Item -Path "$env:LOCALAPPDATA\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState"
+
+	exit
+}
+
+# Set Fira Code Nerd Font as a default font
+[System.Reflection.Assembly]::LoadWithPartialName("System.Drawing") | Out-Null
+
+if ((New-Object -TypeName System.Drawing.Text.InstalledFontCollection).Families.Name -contains "FiraCode NF")
+{
+	if ($Terminal.profiles.defaults.fontFace)
+	{
+		$Terminal.profiles.defaults.fontFace = "FiraCode NF Retina"
+	}
+	else
+	{
+		$Terminal.profiles.defaults | Add-Member -Name fontFace -MemberType NoteProperty -Value "FiraCode NF Retina" -Force
+	}
+}
