@@ -245,7 +245,7 @@ $Parameters = @{
 	Uri            = "https://api.github.com/repos/PowerShell/PSReadLine/releases/latest"
 	UseBasicParsing = $true
 }
-$LatestPSReadLineVersion = (Invoke-RestMethod @Parameters | Where-Object -FilterScript {$_.prerelease -eq $true}).tag_name.Replace("v", "") | Select-Object -First 1
+$LatestPSReadLineVersion = (Invoke-RestMethod @Parameters).tag_name.Replace("v", "") | Select-Object -First 1
 # Remove "-beta" in the release version
 
 if ($null -eq (Get-Module -Name PSReadline -ListAvailable -ErrorAction Ignore))
