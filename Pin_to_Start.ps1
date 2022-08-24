@@ -7,6 +7,11 @@
 
 Clear-Host
 
+if (Get-CimInstance -ClassName Win32_OperatingSystem).BuildNumber -ge 22000)
+{
+	Write-Verbose -Message "Windows 10 required only" -Verbose
+}
+
 if (-not (Get-AppxPackage -Name Microsoft.WindowsTerminal))
 {
 	exit
