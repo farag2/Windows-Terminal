@@ -12,7 +12,7 @@ $Parameters = @{
 }
 $FiraCodeLatestRelease = ((Invoke-RestMethod @Parameters).assets | Where-Object -FilterScript {$_.name -eq "FiraCode.zip"}).browser_download_url
 
-Write-Verbose -Message "Downloading Installing Fira Code Nerd Font" -Verbose
+Write-Verbose -Message "Downloading Fira Code Nerd Font" -Verbose
 
 $Parameters = @{
 	Uri             = $FiraCodeLatestRelease
@@ -43,7 +43,7 @@ $FOF_NOERRORUI             = 1024
 $FOF_NOCOPYSECURITYATTRIBS = 2048
 $CopyOptions = $FOF_SILENT + $FOF_NOCONFIRMATION + $FOF_NOERRORUI + $FOF_NOCOPYSECURITYATTRIBS
 
-Write-Verbose -Message "Installing font" -Verbose
+Write-Verbose -Message "Installing Fira Code Nerd Font" -Verbose
 
 $Fonts = Get-ChildItem -Path "$DownloadsFolder\FiraCode" | Where-Object -FilterScript {($_.Name -match "Fira") -and ($_.Name -match "Compatible")}
 foreach ($Font in $Fonts)
