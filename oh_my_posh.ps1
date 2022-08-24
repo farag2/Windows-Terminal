@@ -12,7 +12,7 @@ $Parameters = @{
 }
 $FiraCodeLatestRelease = ((Invoke-RestMethod @Parameters).assets | Where-Object -FilterScript {$_.name -eq "FiraCode.zip"}).browser_download_url
 
-Write-Verbose -Message "Downloading Installing NuGet" -Verbose
+Write-Verbose -Message "Downloading Installing Fira Code Nerd Font" -Verbose
 
 $Parameters = @{
 	Uri             = $FiraCodeLatestRelease
@@ -42,6 +42,8 @@ $FOF_NOCONFIRMATION        = 16
 $FOF_NOERRORUI             = 1024
 $FOF_NOCOPYSECURITYATTRIBS = 2048
 $CopyOptions = $FOF_SILENT + $FOF_NOCONFIRMATION + $FOF_NOERRORUI + $FOF_NOCOPYSECURITYATTRIBS
+
+Write-Verbose -Message "Installing font" -Verbose
 
 $Fonts = Get-ChildItem -Path "$DownloadsFolder\FiraCode" | Where-Object -FilterScript {($_.Name -match "Fira") -and ($_.Name -match "Compatible")}
 foreach ($Font in $Fonts)
@@ -74,6 +76,7 @@ else
 
 # https://www.powershellgallery.com/packages/terminal-icons
 # https://github.com/devblackops/Terminal-Icons
+Write-Verbose -Message "Installing Terminal-Icons" -Verbose
 Install-Module -Name Terminal-Icons -Force
 Add-Content -Path $PROFILE -Value "`nImport-Module -Name Terminal-Icons" -Force
 
