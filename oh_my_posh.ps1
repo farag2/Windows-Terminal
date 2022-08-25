@@ -123,7 +123,15 @@ if ((New-Object -TypeName System.Drawing.Text.InstalledFontCollection).Families.
 }
 
 ConvertTo-Json -InputObject $Terminal -Depth 4 | Set-Content -Path $settings -Encoding UTF8 -Force
+
 # Re-save in the UTF-8 without BOM encoding due to JSON must not has the BOM: https://datatracker.ietf.org/doc/html/rfc8259#section-8.1
-Set-Content -Value (New-Object -TypeName System.Text.UTF8Encoding -ArgumentList $false).GetBytes($(Get-Content -Path $settings -Raw)) -Encoding Byte -Path $settings -Force
+if ($Host.Version.Major -ne 5)
+{
+	Set-Content -Path $settings -Encoding utf8nobom -Force
+}
+else
+{
+	Set-Content -Value (New-Object -TypeName System.Text.UTF8Encoding -ArgumentList $false).GetBytes($(Get-Content -Path $settings -Raw)) -Encoding Byte -Path $settings -Force
+}
 
 Write-Warning -Message "Restart Windows Terminal"
