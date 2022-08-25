@@ -118,7 +118,7 @@ if ((New-Object -TypeName System.Drawing.Text.InstalledFontCollection).Families.
 	}
 	else
 	{
-		$Terminal.profiles.defaults.font | Add-Member -Name face -MemberType NoteProperty -Value "FiraCode Nerd Font Mono Retina" -Force
+		$Terminal.profiles.defaults | Add-Member -Name font -MemberType NoteProperty -Value @{face = "FiraCode Nerd Font Mono Retina"} -Force
 	}
 }
 
