@@ -341,13 +341,6 @@ ConvertTo-Json -InputObject $Terminal -Depth 4 | Set-Content -Path $settings -En
 # Re-save in the UTF-8 without BOM encoding due to JSON must not has the BOM: https://datatracker.ietf.org/doc/html/rfc8259#section-8.1
 Set-Content -Value (New-Object -TypeName System.Text.UTF8Encoding -ArgumentList $false).GetBytes($(Get-Content -Path $settings -Raw)) -Encoding Byte -Path $settings -Force
 
-# Remove the "Open in Windows Terminal" context menu item
-if (-not (Test-Path -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Shell Extensions\Blocked"))
-{
-	New-Item -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Shell Extensions\Blocked" -Force
-}
-New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Shell Extensions\Blocked" -Name "{9F156763-7844-4DC4-B2B1-901F640F5155}" -PropertyType String -Value "WindowsTerminal" -Force
-
 # Set Windows Terminal as default terminal app to host the user interface for command-line applications
 $TerminalVersion = (Get-AppxPackage -Name Microsoft.WindowsTerminal).Version
 if ([System.Version]$TerminalVersion -ge [System.Version]"1.11")
