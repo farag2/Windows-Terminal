@@ -305,11 +305,11 @@ if (Test-Path -Path "$env:ProgramFiles\PowerShell\7")
 	# Set the PowerShell 7 tab name
 	if (($Terminal.profiles.list | Where-Object -FilterScript {$_.guid -eq "{574e775e-4f2a-5b96-ac1e-a2962a402336}"}).name)
 	{
-		($Terminal.profiles.list | Where-Object -FilterScript {$_.guid -eq "{574e775e-4f2a-5b96-ac1e-a2962a402336}"}).name = "🏆 PowerShell 7"
+		($Terminal.profiles.list | Where-Object -FilterScript {$_.guid -eq "{574e775e-4f2a-5b96-ac1e-a2962a402336}"}).name = "$([char]::ConvertFromUtf32(0x1F3C6)) PowerShell 7"
 	}
 	else
 	{
-		$Terminal.profiles.list | Where-Object -FilterScript {$_.guid -eq "{574e775e-4f2a-5b96-ac1e-a2962a402336}"} | Add-Member -MemberType NoteProperty -Name name -Value "🏆 PowerShell 7" -Force
+		$Terminal.profiles.list | Where-Object -FilterScript {$_.guid -eq "{574e775e-4f2a-5b96-ac1e-a2962a402336}"} | Add-Member -MemberType NoteProperty -Name name -Value "$([char]::ConvertFromUtf32(0x1F3C6)) PowerShell 7" -Force
 	}
 
 	# Run this profile as Administrator by default
@@ -328,11 +328,11 @@ if (Test-Path -Path "$env:ProgramFiles\PowerShell\7-preview")
 	# Background image stretch mode
 	if (($Terminal.profiles.list | Where-Object -FilterScript {$_.guid -eq "{a3a2e83a-884a-5379-baa8-16f193a13b21}"}).name)
 	{
-		($Terminal.profiles.list | Where-Object -FilterScript {$_.guid -eq "{a3a2e83a-884a-5379-baa8-16f193a13b21}"}).name = "🐷 PowerShell 7 Preview"
+		($Terminal.profiles.list | Where-Object -FilterScript {$_.guid -eq "{a3a2e83a-884a-5379-baa8-16f193a13b21}"}).name = "$([char]::ConvertFromUtf32(0x1F437)) PowerShell 7 Preview"
 	}
 	else
 	{
-		$Terminal.profiles.list | Where-Object -FilterScript {$_.guid -eq "{a3a2e83a-884a-5379-baa8-16f193a13b21}"} | Add-Member -MemberType NoteProperty -Name name -Value "🐷 PowerShell 7 Preview" -Force
+		$Terminal.profiles.list | Where-Object -FilterScript {$_.guid -eq "{a3a2e83a-884a-5379-baa8-16f193a13b21}"} | Add-Member -MemberType NoteProperty -Name name -Value "$([char]::ConvertFromUtf32(0x1F437)) PowerShell 7 Preview" -Force
 	}
 }
 #endregion Powershell Core
