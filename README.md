@@ -1,1 +1,1 @@
-# Windows_Terminal
+## Configure Windows Terminal
