@@ -256,13 +256,13 @@ else
 
 if ((New-Object -TypeName System.Drawing.Text.InstalledFontCollection).Families.Name -contains "Cascadia Mono")
 {
-	if ($Terminal.profiles.defaults.fontFace)
+	if ($Terminal.profiles.defaults.font)
 	{
-		$Terminal.profiles.defaults.fontFace = "Cascadia Mono"
+		$Terminal.profiles.defaults.font = "Cascadia Mono"
 	}
 	else
 	{
-		$Terminal.profiles.defaults | Add-Member -Name fontFace -MemberType NoteProperty -Value "Cascadia Mono" -Force
+		$Terminal.profiles.defaults | Add-Member -Name font -MemberType NoteProperty -Value "Cascadia Mono" -Force
 	}
 }
 
