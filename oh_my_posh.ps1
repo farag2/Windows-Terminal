@@ -112,13 +112,13 @@ catch [System.Exception]
 
 if ((New-Object -TypeName System.Drawing.Text.InstalledFontCollection).Families.Name -contains "FiraCode NF")
 {
-	if ($Terminal.profiles.defaults.font)
+	if ($Terminal.profiles.defaults.font.face)
 	{
-		$Terminal.profiles.defaults.font = "FiraCode NF Retina"
+		$Terminal.profiles.defaults.font.face = "FiraCode Nerd Font Mono Retina"
 	}
 	else
 	{
-		$Terminal.profiles.defaults | Add-Member -Name font -MemberType NoteProperty -Value "FiraCode NF Retina" -Force
+		$Terminal.profiles.defaults.font | Add-Member -Name face-MemberType NoteProperty -Value "FiraCode Nerd Font Mono Retina" -Force
 	}
 }
 
