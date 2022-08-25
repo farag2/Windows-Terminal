@@ -251,18 +251,18 @@ else
 	$Terminal.profiles.defaults | Add-Member -MemberType NoteProperty -Name elevate -Value $true -Force
 }
 
-# Set "Cascadia Mono" as a default font
+# Set "FiraCode NF" as a default font
 [System.Reflection.Assembly]::LoadWithPartialName("System.Drawing") | Out-Null
 
-if ((New-Object -TypeName System.Drawing.Text.InstalledFontCollection).Families.Name -contains "Cascadia Mono")
+if ((New-Object -TypeName System.Drawing.Text.InstalledFontCollection).Families.Name -contains "FiraCode NF")
 {
 	if ($Terminal.profiles.defaults.font.face)
 	{
-		$Terminal.profiles.defaults.font.face = "Cascadia Mono"
+		$Terminal.profiles.defaults.font.face = "FiraCode Nerd Font Mono Retina"
 	}
 	else
 	{
-		$Terminal.profiles.defaults.font | Add-Member -Name face-MemberType NoteProperty -Value "Cascadia Mono" -Force
+		$Terminal.profiles.defaults.font | Add-Member -Name face-MemberType NoteProperty -Value "FiraCode Nerd Font Mono Retina" -Force
 	}
 }
 
