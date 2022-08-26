@@ -195,7 +195,7 @@ if ($null -eq (Get-Module -Name PowerShellGet -ListAvailable -ErrorAction Ignore
 }
 else
 {
-	$CurrentPowerShellGetVersion = ((Get-Module -Name PowerShellGet).Version | Measure-Object -Maximum).Maximum.ToString()
+	$CurrentPowerShellGetVersion = ((Get-Module -Name PowerShellGet -ListAvailable).Version | Measure-Object -Maximum).Maximum.ToString()
 }
 
 $CurrentStablePowerShellGetVersion = "2.2.5"
