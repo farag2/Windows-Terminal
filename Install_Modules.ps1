@@ -218,8 +218,6 @@ if ([System.Version]$CurrentPowerShellGetVersion -lt [System.Version]$CurrentSta
 	exit
 }
 
-Start-Transcript -Path C:\log.txt -Force
-	
 $LatestPowerShellGetVersion = "3.0.16"
 if ([System.Version]$CurrentPowerShellGetVersion -lt [System.Version]$LatestPowerShellGetVersion)
 {
