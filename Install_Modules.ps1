@@ -218,7 +218,7 @@ if ([System.Version]$CurrentPowerShellGetVersion -lt [System.Version]$CurrentSta
 	exit
 }
 
-$LatestPowerShellGetVersion = "3.0.16"
+$LatestPowerShellGetVersion = "3.0.17"
 if ([System.Version]$CurrentPowerShellGetVersion -lt [System.Version]$LatestPowerShellGetVersion)
 {
 	Write-Verbose -Message "Installing PowerShellGet $($LatestPowerShellGetVersion)" -Verbose
