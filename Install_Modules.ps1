@@ -10,6 +10,8 @@ if ($psISE)
 	exit
 }
 
+Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force
+
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 
 # Installing the latest NuGet
