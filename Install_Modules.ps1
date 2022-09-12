@@ -13,7 +13,6 @@ if ($psISE)
 Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force
 
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-[Net.ServicePointManager]::SecurityProtocol
 
 # Installing the latest NuGet
 if (-not (Test-Path -Path "$env:ProgramFiles\PackageManagement\ProviderAssemblies\nuget\*\Microsoft.PackageManagement.NuGetProvider.dll"))
