@@ -196,7 +196,6 @@ if ($null -eq (Get-Module -Name PowerShellGet -ListAvailable -ErrorAction Ignore
 	}
 
 	break
-	# exit
 }
 else
 {
@@ -221,7 +220,6 @@ if ([System.Version]$CurrentPowerShellGetVersion -lt [System.Version]$CurrentSta
 	}
 
 	break
-	# exit
 }
 
 $LatestPowerShellGetVersion = "3.0.17"
@@ -242,7 +240,6 @@ if ([System.Version]$CurrentPowerShellGetVersion -lt [System.Version]$LatestPowe
 	}
 
 	break
-	# exit
 }
 
 # Installing the latest PSReadLine
@@ -261,6 +258,7 @@ if ($null -eq (Get-Module -Name PSReadline -ListAvailable -ErrorAction Ignore))
 	Write-Verbose -Message "Installing PSReadline $($LatestPSReadLineVersion)" -Verbose
 
 	Install-Module -Name PSReadline -Force
+	Import-Module -Name PSReadline -Force
 
 	if ($env:WT_SESSION)
 	{
@@ -272,7 +270,6 @@ if ($null -eq (Get-Module -Name PSReadline -ListAvailable -ErrorAction Ignore))
 	}
 
 	break
-	# exit
 }
 else
 {
@@ -285,6 +282,7 @@ if ([System.Version]$CurrentPSReadlineVersion -lt [System.Version]$LatestPSReadL
 	Write-Verbose -Message "Installing PSReadLine $($LatestPSReadLineVersion)" -Verbose
 
 	Install-Module -Name PSReadline -Force
+	Import-Module -Name PSReadline -Force
 
 	if ($env:WT_SESSION)
 	{
@@ -296,7 +294,6 @@ if ([System.Version]$CurrentPSReadlineVersion -lt [System.Version]$LatestPSReadL
 	}
 
 	break
-	# exit
 }
 
 if ([System.Version]$CurrentPSReadlineVersion -eq [System.Version]$LatestPSReadLineVersion)
