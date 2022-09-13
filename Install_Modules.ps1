@@ -299,17 +299,19 @@ if ([System.Version]$CurrentPSReadlineVersion -lt [System.Version]$LatestPSReadL
 			Write-Verbose -Message "PSReadline $($LatestPSReadLineVersion) installed. Restart the PowerShell session, and re-run the script" -Verbose
 		}
 
-		break
+		exit
 	}
 	else
 	{
 		if ($env:WT_SESSION)
 		{
 			wt new-tab
+			exit
 		}
 		else
 		{
 			Start-Process -FilePath powershell.exe
+			exit
 		}
 	}
 }
