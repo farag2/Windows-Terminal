@@ -110,11 +110,11 @@ catch [System.Exception]
 # Set Fira Code Nerd Font as a default font
 [System.Reflection.Assembly]::LoadWithPartialName("System.Drawing") | Out-Null
 
-if ((New-Object -TypeName System.Drawing.Text.InstalledFontCollection).Families.Name -contains "FiraCode")
+if ((New-Object -TypeName System.Drawing.Text.InstalledFontCollection).Families.Name -contains "FiraCode NF")
 {
 	if ($Terminal.profiles.defaults.font.face)
 	{
-		$Terminal.profiles.defaults.font.face = "FiraCode Nerd Font Mono Retina"
+		$Terminal.profiles.defaults.font.face = "FiraCode NFM Retina"
 	}
 	else
 	{
@@ -133,4 +133,11 @@ else
 	Set-Content -Path $settings -Value (New-Object -TypeName System.Text.UTF8Encoding -ArgumentList $false).GetBytes($(Get-Content -Path $settings -Raw)) -Encoding Byte -Force
 }
 
-Write-Warning -Message "Restart Windows Terminal"
+if ($env:WT_SESSION)
+{
+	Write-Warning -Message "Restart Windows Terminal"
+}
+else
+{
+	Write-Verbose -Message "PowerShellGet $($LatestPowerShellGetVersion) installed. Restart the PowerShell session, and re-run the script" -Verbose
+}
