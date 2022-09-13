@@ -285,7 +285,7 @@ if ([System.Version]$CurrentPSReadlineVersion -lt [System.Version]$LatestPSReadL
 	Install-Module -Name PSReadline -Force
 	# Unload all old PSReadLine modules
 	Remove-Module -Name PSReadline -Force
-	Import-Module -Name PSReadline -RequiredVersion $LatestPSReadLineVersion -Force
+	Import-Module -Name PSReadline -RequiredVersion $($LatestPSReadLineVersion) -Force -whatif
 
 	if ($env:WT_SESSION)
 	{
@@ -301,6 +301,8 @@ if ([System.Version]$CurrentPSReadlineVersion -lt [System.Version]$LatestPSReadL
 
 if ([System.Version]$CurrentPSReadlineVersion -eq [System.Version]$LatestPSReadLineVersion)
 {
+	Write-Verbose -Message "Removing old PSReadLine modules" -Verbose
+
 	# Removing all PSReadLine folders except the latest and the default ones
 	Get-Childitem -Path "$env:ProgramFiles\WindowsPowerShell\Modules\PSReadLine" -Force | Where-Object -FilterScript {$_.Name -ne $LatestPSReadLineVersion} | Remove-Item -Recurse -Force
 }
