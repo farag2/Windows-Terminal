@@ -134,5 +134,5 @@ if ($env:WT_SESSION)
 }
 else
 {
-	Write-Verbose -Message "PowerShellGet $($LatestPowerShellGetVersion) installed. Restart the PowerShell session, and re-run the script" -Verbose
+	Write-Warning -Message "Restart PowerShell"
 }
