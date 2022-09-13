@@ -278,8 +278,8 @@ else
 }
 
 # Installing the latest PSReadLine
-$CurrentPSReadlineVersion
-$LatestPSReadLineVersion
+"1 is $($CurrentPSReadlineVersion)"
+"2 is $($LatestPSReadLineVersion)"
 if ([System.Version]$CurrentPSReadlineVersion -lt [System.Version]$LatestPSReadLineVersion)
 {
 	Write-Verbose -Message "Installing PSReadLine $($LatestPSReadLineVersion)" -Verbose
@@ -300,6 +300,10 @@ if ([System.Version]$CurrentPSReadlineVersion -lt [System.Version]$LatestPSReadL
 	}
 	$PSCommandPath
 	pause
+}
+else
+{
+	"not OK"
 }
 
 if ([System.Version]$CurrentPSReadlineVersion -eq [System.Version]$LatestPSReadLineVersion)
