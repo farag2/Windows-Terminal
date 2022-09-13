@@ -63,6 +63,10 @@ foreach ($Font in $Fonts)
 	{
 		(New-Object -ComObject Shell.Application).NameSpace($ssfFONTS).CopyHere($Font.FullName, $CopyOptions)
 	}
+	else
+	{
+		Write-Verbose -Message "$($Font.Name) already installed" -Verbose
+	}
 }
 
 Remove-Item -Path "$DownloadsFolder\FiraCode.zip", "$DownloadsFolder\FiraCode" -Recurse -Force
