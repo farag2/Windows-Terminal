@@ -59,12 +59,7 @@ Write-Verbose -Message "Installing Fira Code Nerd Font" -Verbose
 $Fonts = Get-ChildItem -Path "$DownloadsFolder\FiraCode" | Where-Object -FilterScript {($_.Name -match "Fira") -and ($_.Name -match "Compatible")}
 foreach ($Font in $Fonts)
 {
-	if (Test-Path -Path "$env:SystemRoot\Fonts\$($Font.Name)")
-	{
-		Remove-Item -Path "$env:SystemRoot\Fonts\$($Font.Name)" -Force
-		Copy-Item -Path $Font.FullName -Destination $env:SystemRoot\Fonts -Force
-	}
-	else
+	if (-not (Test-Path -Path "$env:LOCALAPPDATA\Microsoft\Windows\Fonts\$($Font.Name)"))
 	{
 		(New-Object -ComObject Shell.Application).NameSpace($ssfFONTS).CopyHere($Font.FullName, $CopyOptions)
 	}
