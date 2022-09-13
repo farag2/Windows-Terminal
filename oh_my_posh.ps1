@@ -110,7 +110,7 @@ catch [System.Exception]
 # Set Fira Code Nerd Font as a default font
 [System.Reflection.Assembly]::LoadWithPartialName("System.Drawing") | Out-Null
 
-if ((New-Object -TypeName System.Drawing.Text.InstalledFontCollection).Families.Name -contains "FiraCode NF")
+if ((New-Object -TypeName System.Drawing.Text.InstalledFontCollection).Families.Name -contains "FiraCode")
 {
 	if ($Terminal.profiles.defaults.font.face)
 	{
@@ -118,7 +118,7 @@ if ((New-Object -TypeName System.Drawing.Text.InstalledFontCollection).Families.
 	}
 	else
 	{
-		$Terminal.profiles.defaults | Add-Member -Name font -MemberType NoteProperty -Value @{face = "FiraCode Nerd Font Mono Retina"} -Force
+		$Terminal.profiles.defaults | Add-Member -Name font -MemberType NoteProperty -Value @{face = "FiraCode NFM Retina"} -Force
 	}
 }
 
