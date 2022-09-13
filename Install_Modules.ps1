@@ -304,5 +304,6 @@ if ([System.Version]$CurrentPSReadlineVersion -eq [System.Version]$LatestPSReadL
 
 	# Removing all PSReadLine folders except the latest and the default ones
 	Get-Childitem -Path "$env:ProgramFiles\WindowsPowerShell\Modules\PSReadLine" -Force | Where-Object -FilterScript {$_.Name -ne $LatestPSReadLineVersion} | Remove-Item -Recurse -Force
+	Start-Transcript -Path C:\log.txt -Force
 	Import-Module -Name PSReadline -RequiredVersion $($LatestPSReadLineVersion) -Force
 }
