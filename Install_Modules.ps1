@@ -296,8 +296,8 @@ if ([System.Version]$CurrentPSReadlineVersion -lt [System.Version]$LatestPSReadL
 	{
 		Write-Verbose -Message "PSReadline $($LatestPSReadLineVersion) installed. Restart the PowerShell session, and re-run the script" -Verbose
 	}
-
-	break
+	$PSCommandPath
+	pause
 }
 
 if ([System.Version]$CurrentPSReadlineVersion -eq [System.Version]$LatestPSReadLineVersion)
