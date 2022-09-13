@@ -51,8 +51,8 @@ $ssfFONTS                  = 20
 $FOF_SILENT                = 4
 $FOF_NOCONFIRMATION        = 16
 $FOF_NOERRORUI             = 1024
-$FOF_NOCOPYSECURITYATTRIBS = 2048
-$CopyOptions = $FOF_SILENT + $FOF_NOCONFIRMATION + $FOF_NOERRORUI + $FOF_NOCOPYSECURITYATTRIBS
+$CopyOptions = $FOF_SILENT + $FOF_NOCONFIRMATION + $FOF_NOERRORUI
+$CopyOptions = '0x{0:x}' -f $CopyOptions
 
 Write-Verbose -Message "Installing Fira Code Nerd Font" -Verbose
 
