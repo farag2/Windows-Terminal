@@ -285,7 +285,7 @@ if ([System.Version]$CurrentPSReadlineVersion -lt [System.Version]$LatestPSReadL
 	Install-Module -Name PSReadline -Force
 	# Unload all old PSReadLine modules
 	Remove-Module -Name PSReadline -Force
-	Import-Module -Name PSReadline -RequiredVersion $($LatestPSReadLineVersion) -Force -whatif
+	Import-Module -Name PSReadline -RequiredVersion $($LatestPSReadLineVersion) -Force
 
 	if ($env:WT_SESSION)
 	{
