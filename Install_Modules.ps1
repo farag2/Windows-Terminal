@@ -2,7 +2,7 @@
 
 # https://docs.microsoft.com/en-us/windows/terminal/
 # https://github.com/microsoft/terminal/releases
-Start-Transcript -Path C:\log.txt -Force
+
 Clear-Host
 
 if ($psISE)
@@ -45,7 +45,9 @@ if ($null -eq (Get-Module -Name PowerShellGet -ListAvailable -ErrorAction Ignore
 		Verbose         = $true
 	}
 	Invoke-WebRequest @Parameters
+
 	$LatestPackageManagementVersion = (Import-PowerShellDataFile -Path "$DownloadsFolder\PackageManagement.psd1").ModuleVersion
+
 	Remove-Item -Path "$DownloadsFolder\PackageManagement.psd1" -Force
 	#>
 
@@ -193,7 +195,8 @@ if ($null -eq (Get-Module -Name PowerShellGet -ListAvailable -ErrorAction Ignore
 		Write-Verbose -Message "PowerShellGet & PackageManagement installed. Restart the PowerShell session, and re-run the script" -Verbose
 	}
 
-	exit
+	break
+	# exit
 }
 else
 {
@@ -217,7 +220,8 @@ if ([System.Version]$CurrentPowerShellGetVersion -lt [System.Version]$CurrentSta
 		Write-Verbose -Message "PowerShellGet $($CurrentStablePowerShellGetVersion) & PackageManagement installed. Restart the PowerShell session, and re-run the script" -Verbose
 	}
 
-	exit
+	break
+	# exit
 }
 
 $LatestPowerShellGetVersion = "3.0.17"
@@ -237,7 +241,8 @@ if ([System.Version]$CurrentPowerShellGetVersion -lt [System.Version]$LatestPowe
 		Write-Verbose -Message "PowerShellGet $($LatestPowerShellGetVersion) installed. Restart the PowerShell session, and re-run the script" -Verbose
 	}
 
-	exit
+	break
+	# exit
 }
 
 # Installing the latest PSReadLine
@@ -266,7 +271,8 @@ if ($null -eq (Get-Module -Name PSReadline -ListAvailable -ErrorAction Ignore))
 		Write-Verbose -Message "PSReadline $($LatestPSReadLineVersion) installed. Restart the PowerShell session, and re-run the script" -Verbose
 	}
 
-	exit
+	break
+	# exit
 }
 else
 {
@@ -289,7 +295,8 @@ if ([System.Version]$CurrentPSReadlineVersion -lt [System.Version]$LatestPSReadL
 		Write-Verbose -Message "PSReadline $($LatestPSReadLineVersion) installed. Restart the PowerShell session, and re-run the script" -Verbose
 	}
 
-	exit
+	break
+	# exit
 }
 
 if ([System.Version]$CurrentPSReadlineVersion -eq [System.Version]$LatestPSReadLineVersion)
