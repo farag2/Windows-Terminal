@@ -283,34 +283,27 @@ if ([System.Version]$CurrentPSReadlineVersion -lt [System.Version]$LatestPSReadL
 	Write-Verbose -Message "Installing PSReadLine $($LatestPSReadLineVersion)" -Verbose
 
 	Install-Module -Name PSReadline -Force
-	1
-	pause
+
 	# Unload all old PSReadLine modules
 	Remove-Module -Name PSReadline -Force
-	2
-	pause
-Get-Module -Name PSReadline
-3
-	pause
-	if ((Get-Module -Name PSReadline -ListAvailable).Count -gt 1)
-	{
-		Write-Verbose -Message "Removing old PSReadLine modules" -Verbose
-4
-	pause
-	# Removing all PSReadLine folders except the latest and the default ones
-	Get-Childitem -Path "$env:ProgramFiles\WindowsPowerShell\Modules\PSReadLine" -Force | Where-Object -FilterScript {$_.Name -ne $LatestPSReadLineVersion} | Remove-Item -Recurse -Force
-	}
-	5
-pause
-	Import-Module -Name PSReadline -RequiredVersion $LatestPSReadLineVersion -Force
-	6
-pause
+	Import-Module -Name PSReadline -RequiredVersion $($LatestPSReadLineVersion) -Force
+
 	if ($env:WT_SESSION)
 	{
-		Write-Verbose -Message "PSReadline $($LatestPSReadLineVersion) installed. Open a new Windows Terminal tab" -Verbose
+		Write-Verbose -Message "PSReadline $($LatestPSReadLineVersion) installed. Open a new Windows Terminal tab, and re-run the script" -Verbose
 	}
 	else
 	{
-		Write-Verbose -Message "PSReadline $($LatestPSReadLineVersion) installed. Restart the PowerShell session" -Verbose
+		Write-Verbose -Message "PSReadline $($LatestPSReadLineVersion) installed. Restart the PowerShell session, and re-run the script" -Verbose
 	}
+
+	exit
+}
+
+if ([System.Version]$CurrentPSReadlineVersion -eq [System.Version]$LatestPSReadLineVersion)
+{
+	Write-Verbose -Message "Removing old PSReadLine modules" -Verbose
+
+	# Removing all PSReadLine folders except the latest and the default ones
+	Get-Childitem -Path "$env:ProgramFiles\WindowsPowerShell\Modules\PSReadLine" -Force | Where-Object -FilterScript {$_.Name -ne $LatestPSReadLineVersion} | Remove-Item -Recurse -Force
 }
