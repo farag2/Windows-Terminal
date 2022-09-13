@@ -48,6 +48,8 @@ Get-ChildItem -Path "$DownloadsFolder\FiraCode" -Recurse -Force | Unblock-File
 # https://docs.microsoft.com/en-us/windows/win32/shell/folder-copyhere
 $ssfFONTS                  = 20
 # https://docs.microsoft.com/en-us/windows/win32/api/shellapi/ns-shellapi-shfileopstructa
+# Flag will be ignored anyway
+# https://stackoverflow.com/questions/12165856/how-do-i-pass-option-flags-to-folder-copyhere-in-powershell
 $FOF_SILENT                = 4
 $FOF_NOCONFIRMATION        = 16
 $FOF_NOERRORUI             = 1024
