@@ -2,7 +2,7 @@
 
 # https://docs.microsoft.com/en-us/windows/terminal/
 # https://github.com/microsoft/terminal/releases
-
+Start-Transcript -Path C:\log.txt -Force
 Clear-Host
 
 if ($psISE)
