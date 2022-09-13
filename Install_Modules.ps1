@@ -284,36 +284,16 @@ if ([System.Version]$CurrentPSReadlineVersion -lt [System.Version]$LatestPSReadL
 
 	Install-Module -Name PSReadline -Force
 
-	# Unload all old PSReadLine modules
-	Remove-Module -Name PSReadline -Force
-	Import-Module -Name PSReadline -RequiredVersion $($LatestPSReadLineVersion) -Force
-
-	if ($PSCommandPath)
+	if ($env:WT_SESSION)
 	{
-		if ($env:WT_SESSION)
-		{
-			Write-Verbose -Message "PSReadline $($LatestPSReadLineVersion) installed. Open a new Windows Terminal tab, and re-run the script" -Verbose
-		}
-		else
-		{
-			Write-Verbose -Message "PSReadline $($LatestPSReadLineVersion) installed. Restart the PowerShell session, and re-run the script" -Verbose
-		}
-
-		exit
+		Write-Verbose -Message "PSReadline $($LatestPSReadLineVersion) installed. Open a new Windows Terminal tab, and re-run the script" -Verbose
 	}
 	else
 	{
-		if ($env:WT_SESSION)
-		{
-			wt new-tab
-			exit
-		}
-		else
-		{
-			Start-Process -FilePath powershell.exe
-			exit
-		}
+		Write-Verbose -Message "PSReadline $($LatestPSReadLineVersion) installed. Restart the PowerShell session, and re-run the script" -Verbose
 	}
+
+	break
 }
 
 if ([System.Version]$CurrentPSReadlineVersion -eq [System.Version]$LatestPSReadLineVersion)
