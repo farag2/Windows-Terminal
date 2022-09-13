@@ -188,7 +188,7 @@ if ($null -eq (Get-Module -Name PowerShellGet -ListAvailable -ErrorAction Ignore
 
 	if ($env:WT_SESSION)
 	{
-		Write-Verbose -Message "PowerShellGet & PackageManagement installed. Open a new Windows Terminal tab, and re-run the script" -Verbose
+		Write-Verbose -Message "PowerShellGet & PackageManagement installed. Close this tab and open a new Windows Terminal tab, and re-run the script" -Verbose
 	}
 	else
 	{
@@ -212,7 +212,7 @@ if ([System.Version]$CurrentPowerShellGetVersion -lt [System.Version]$CurrentSta
 
 	if ($env:WT_SESSION)
 	{
-		Write-Verbose -Message "PowerShellGet $($CurrentStablePowerShellGetVersion) & PackageManagement installed. Open a new Windows Terminal tab, and re-run the script" -Verbose
+		Write-Verbose -Message "PowerShellGet $($CurrentStablePowerShellGetVersion) & PackageManagement installed. Close this tab and open a new Windows Terminal tab, and re-run the script" -Verbose
 	}
 	else
 	{
@@ -232,7 +232,7 @@ if ([System.Version]$CurrentPowerShellGetVersion -lt [System.Version]$LatestPowe
 
 	if ($env:WT_SESSION)
 	{
-		Write-Verbose -Message "PowerShellGet $($LatestPowerShellGetVersion) installed. Open a new Windows Terminal tab, and re-run the script" -Verbose
+		Write-Verbose -Message "PowerShellGet $($LatestPowerShellGetVersion) installed. Close this tab and open a new Windows Terminal tab, and re-run the script" -Verbose
 	}
 	else
 	{
@@ -263,7 +263,7 @@ if ($null -eq (Get-Module -Name PSReadline -ListAvailable -ErrorAction Ignore))
 
 	if ($env:WT_SESSION)
 	{
-		Write-Verbose -Message "PSReadline $($LatestPSReadLineVersion) installed. Open a new Windows Terminal tab, and re-run the script" -Verbose
+		Write-Verbose -Message "PSReadline $($LatestPSReadLineVersion) installed. Close this tab and open a new Windows Terminal tab, and re-run the script" -Verbose
 	}
 	else
 	{
@@ -286,7 +286,7 @@ if ([System.Version]$CurrentPSReadlineVersion -lt [System.Version]$LatestPSReadL
 
 	if ($env:WT_SESSION)
 	{
-		Write-Verbose -Message "PSReadline $($LatestPSReadLineVersion) installed. Open a new Windows Terminal tab, and re-run the script" -Verbose
+		Write-Verbose -Message "PSReadline $($LatestPSReadLineVersion) installed. Close this tab and open a new Windows Terminal tab, and re-run the script" -Verbose
 	}
 	else
 	{
