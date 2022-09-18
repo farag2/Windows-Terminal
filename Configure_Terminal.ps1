@@ -337,6 +337,48 @@ if (Test-Path -Path "$env:ProgramFiles\PowerShell\7-preview")
 }
 #endregion Powershell Core
 
+# https://devblogs.microsoft.com/commandline/windows-terminal-preview-1-16-release/
+# https://unsplash.com/photos/YAtspJ-HV2E
+$TerminalVersion = (Get-AppxPackage -Name Microsoft.WindowsTerminal).Version
+if ([System.Version]$TerminalVersion -ge [System.Version]"1.16")
+{
+	if ($Terminal.theme)
+	{
+		$Terminal.theme = "Grace Kelly"
+	}
+	else
+	{
+		$Terminal | Add-Member -Name theme -MemberType NoteProperty -Value "Grace Kelly" -Force
+	}
+
+	# Create empty array ("themes": [])
+	if (-not $Terminal.themes)
+	{
+		$Terminal | Add-Member -Name themes -MemberType NoteProperty -Value @() -Force
+	}
+
+	# not $null
+	if (-not ($Terminal.themes | Where-Object -FilterScript {$_.name -eq "Grace Kelly"}))
+	{
+		# not $null
+		$Grace_Kelly = [ordered]@{
+			"name" = "Grace Kelly"
+			tab = [ordered]@{
+				"background"          = "#00515EFF"
+				"unfocusedBackground" = "null"
+			}
+			tabRow = [ordered]@{
+				"background"          = "#061612FF"
+				"unfocusedBackground" = "#061612FF"
+			}
+			window = [ordered]@{
+				"applicationTheme" = "dark"
+			}
+		}
+		$Terminal.themes += $Grace_Kelly
+	}
+}
+
 # Re-save in the UTF-8 without BOM encoding due to JSON must not has the BOM: https://datatracker.ietf.org/doc/html/rfc8259#section-8.1
 if ($Host.Version.Major -ne 5)
 {
