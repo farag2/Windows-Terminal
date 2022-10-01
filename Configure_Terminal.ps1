@@ -357,15 +357,13 @@ if ([System.Version]$TerminalVersion -ge [System.Version]"1.16")
 		$Terminal | Add-Member -Name themes -MemberType NoteProperty -Value @() -Force
 	}
 
-	# not $null
 	if (-not ($Terminal.themes | Where-Object -FilterScript {$_.name -eq "Grace Kelly"}))
 	{
-		# not $null
 		$Grace_Kelly = [ordered]@{
 			"name" = "Grace Kelly"
 			tab = [ordered]@{
 				"background"          = "#00515EFF"
-				"unfocusedBackground" = "null"
+				"unfocusedBackground" = "accent"
 			}
 			tabRow = [ordered]@{
 				"background"          = "#061612FF"
