@@ -257,7 +257,7 @@ if ($null -eq (Get-Module -Name PSReadline -ListAvailable -ErrorAction Ignore))
 	Write-Verbose -Message "Installing PSReadline $($LatestPSReadLineVersion)" -Verbose
 
 	Install-Module -Name PSReadline -Force
-	Import-Module -Name PSReadline -Force
+	Import-Module -Name PSReadline
 
 	if ($env:WT_SESSION)
 	{
@@ -281,7 +281,7 @@ if ([System.Version]$CurrentPSReadlineVersion -lt [System.Version]$LatestPSReadL
 	Write-Verbose -Message "Installing PSReadLine $($LatestPSReadLineVersion)" -Verbose
 
 	Install-Module -Name PSReadline -Force
-	Import-Module -Name PSReadline -Force
+	Import-Module -Name PSReadline
 
 	if ($env:WT_SESSION)
 	{
