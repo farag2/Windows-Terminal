@@ -257,6 +257,7 @@ if ($null -eq (Get-Module -Name PSReadline -ListAvailable -ErrorAction Ignore))
 	Write-Verbose -Message "Installing PSReadline $($LatestPSReadLineVersion)" -Verbose
 
 	Install-Module -Name PSReadline -Force
+	Import-Module -Name PSReadline -Force
 
 	if ($env:WT_SESSION)
 	{
@@ -280,6 +281,7 @@ if ([System.Version]$CurrentPSReadlineVersion -lt [System.Version]$LatestPSReadL
 	Write-Verbose -Message "Installing PSReadLine $($LatestPSReadLineVersion)" -Verbose
 
 	Install-Module -Name PSReadline -Force
+	Import-Module -Name PSReadline -Force
 
 	if ($env:WT_SESSION)
 	{
@@ -299,4 +301,13 @@ if ([System.Version]$CurrentPSReadlineVersion -eq [System.Version]$LatestPSReadL
 
 	# Removing all PSReadLine folders except the latest and the default ones
 	Get-Childitem -Path "$env:ProgramFiles\WindowsPowerShell\Modules\PSReadLine" -Force | Where-Object -FilterScript {$_.Name -ne $LatestPSReadLineVersion} | Remove-Item -Recurse -Force
+
+	if ($env:WT_SESSION)
+	{
+		Write-Verbose -Message "All is done. Close this tab and open a new Windows Terminal tab" -Verbose
+	}
+	else
+	{
+		Write-Verbose -Message "All is done. Restart the PowerShell session" -Verbose
+	}
 }
