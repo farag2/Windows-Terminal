@@ -222,6 +222,19 @@ if ([System.Version]$CurrentPowerShellGetVersion -lt [System.Version]$CurrentSta
 	break
 }
 
+<#
+$Parameters = @{
+	Uri             = "https://raw.githubusercontent.com/PowerShell/PowerShellGet/master/src/PowerShellGet.psd1"
+	OutFile         = "$DownloadsFolder\PowerShellGet.psd1"
+	UseBasicParsing = $true
+	Verbose         = $true
+}
+Invoke-WebRequest @Parameters
+
+$LatestPowerShellGetVersion = (Import-PowerShellDataFile -Path "$DownloadsFolder\PowerShellGet.psd1").ModuleVersion
+
+Remove-Item -Path "$DownloadsFolder\PowerShellGet.psd1" -Force
+#>
 $LatestPowerShellGetVersion = "3.0.17"
 if ([System.Version]$CurrentPowerShellGetVersion -lt [System.Version]$LatestPowerShellGetVersion)
 {
