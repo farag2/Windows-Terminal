@@ -235,7 +235,7 @@ $LatestPowerShellGetVersion = (Import-PowerShellDataFile -Path "$DownloadsFolder
 
 Remove-Item -Path "$DownloadsFolder\PowerShellGet.psd1" -Force
 #>
-$LatestPowerShellGetVersion = "3.0.17"
+$LatestPowerShellGetVersion = "3.0.19"
 if ([System.Version]$CurrentPowerShellGetVersion -lt [System.Version]$LatestPowerShellGetVersion)
 {
 	Write-Verbose -Message "Installing PowerShellGet $($LatestPowerShellGetVersion)" -Verbose
