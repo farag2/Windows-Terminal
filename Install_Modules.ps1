@@ -37,7 +37,6 @@ if ($null -eq (Get-Module -Name PowerShellGet -ListAvailable -ErrorAction Ignore
 	# https://www.powershellgallery.com/packages/PackageManagement
 	# https://github.com/oneget/oneget
 
-	<#
 	$Parameters = @{
 		Uri             = "https://raw.githubusercontent.com/OneGet/oneget/WIP/src/Microsoft.PowerShell.PackageManagement/PackageManagement.psd1"
 		OutFile         = "$DownloadsFolder\PackageManagement.psd1"
@@ -49,11 +48,9 @@ if ($null -eq (Get-Module -Name PowerShellGet -ListAvailable -ErrorAction Ignore
 	$LatestPackageManagementVersion = (Import-PowerShellDataFile -Path "$DownloadsFolder\PackageManagement.psd1").ModuleVersion
 
 	Remove-Item -Path "$DownloadsFolder\PackageManagement.psd1" -Force
-	#>
-
 	# If PackageManagement doesn't exist or its' version is lower than the latest one
 	$CurrentPackageManagementVersion = ((Get-Module -Name PackageManagement -ListAvailable).Version | Measure-Object -Maximum).Maximum.ToString()
-	$LatestPackageManagementVersion = "1.4.8.1"
+
 	if (($null -eq (Get-Module -Name PackageManagement -ListAvailable -ErrorAction Ignore)) -or ([System.Version]$CurrentPackageManagementVersion -lt [System.Version]$LatestPackageManagementVersion))
 	{
 		Write-Verbose -Message "PackageManagement module doesn't exist" -Verbose
@@ -222,7 +219,6 @@ if ([System.Version]$CurrentPowerShellGetVersion -lt [System.Version]$CurrentSta
 	break
 }
 
-<#
 $Parameters = @{
 	Uri             = "https://raw.githubusercontent.com/PowerShell/PowerShellGet/master/src/PowerShellGet.psd1"
 	OutFile         = "$DownloadsFolder\PowerShellGet.psd1"
@@ -234,8 +230,7 @@ Invoke-WebRequest @Parameters
 $LatestPowerShellGetVersion = (Import-PowerShellDataFile -Path "$DownloadsFolder\PowerShellGet.psd1").ModuleVersion
 
 Remove-Item -Path "$DownloadsFolder\PowerShellGet.psd1" -Force
-#>
-$LatestPowerShellGetVersion = "3.0.19"
+
 if ([System.Version]$CurrentPowerShellGetVersion -lt [System.Version]$LatestPowerShellGetVersion)
 {
 	Write-Verbose -Message "Installing PowerShellGet $($LatestPowerShellGetVersion)" -Verbose
