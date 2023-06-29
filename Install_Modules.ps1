@@ -202,21 +202,21 @@ else
 	$CurrentPowerShellGetVersion = ((Get-Module -Name PSResourceGet -ListAvailable).Version | Measure-Object -Maximum).Maximum.ToString()
 }
 
-$CurrentStablePSResourceGetVersion = "2.2.5"
-if ([System.Version]$CurrentPowerShellGetVersion -lt [System.Version]$CurrentStablePSResourceGetVersion)
+$CurrentStablePowerShellGetGetVersion = "2.2.5"
+if ([System.Version]$CurrentPowerShellGetVersion -lt [System.Version]$CurrentStablePowerShellGetGetVersion)
 {
-	Write-Verbose -Message "Installing PowerShellGet $($CurrentStablePSResourceGetVersion)" -Verbose
+	Write-Verbose -Message "Installing PowerShellGet $($CurrentStablePowerShellGetGetVersion)" -Verbose
 
 	Install-Module -Name PowerShellGet -Force
 	Install-Module -Name PackageManagement -Force
 
 	if ($env:WT_SESSION)
 	{
-		Write-Verbose -Message "PowerShellGet $($CurrentStablePSResourceGetVersion) & PackageManagement installed. Close this tab and open a new Windows Terminal tab, and re-run the script" -Verbose
+		Write-Verbose -Message "PowerShellGet $($CurrentStablePowerShellGetGetVersion) & PackageManagement installed. Close this tab and open a new Windows Terminal tab, and re-run the script" -Verbose
 	}
 	else
 	{
-		Write-Verbose -Message "PowerShellGet $($CurrentStablePSResourceGetVersion) & PackageManagement installed. Restart the PowerShell session, and re-run the script" -Verbose
+		Write-Verbose -Message "PowerShellGet $($CurrentStablePowerShellGetGetVersion) & PackageManagement installed. Restart the PowerShell session, and re-run the script" -Verbose
 	}
 
 	break
