@@ -32,7 +32,7 @@ $DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows
 
 # Install the latest PowerShellGet version
 # https://www.powershellgallery.com/packages/PowerShellGet
-# https://github.com/PowerShell/PowerShellGet
+# https://github.com/PowerShell/PSResourceGet
 if ($null -eq (Get-Module -Name PowerShellGet -ListAvailable -ErrorAction Ignore))
 {
 	# Get latest PackageManagement version
@@ -222,7 +222,7 @@ if ([System.Version]$CurrentPowerShellGetVersion -lt [System.Version]$CurrentSta
 }
 
 $Parameters = @{
-	Uri             = "https://raw.githubusercontent.com/PowerShell/PowerShellGet/master/src/PowerShellGet.psd1"
+	Uri             = "https://raw.githubusercontent.com/PowerShell/PSResourceGet/master/src/Microsoft.PowerShell.PSResourceGet.psd1"
 	OutFile         = "$DownloadsFolder\PowerShellGet.psd1"
 	UseBasicParsing = $true
 	Verbose         = $true
