@@ -32,8 +32,9 @@ $DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows
 
 # Install the latest PSResourceGet version
 # https://www.powershellgallery.com/packages/PSResourceGet
+# https://www.powershellgallery.com/packages/PowerShellGet
 # https://github.com/PowerShell/PSResourceGet
-if ($null -eq (Get-Module -Name PSResourceGet -ListAvailable -ErrorAction Ignore))
+if ($null -eq (Get-Module -Name PowerShellGet -ListAvailable -ErrorAction Ignore))
 {
 	# Get latest PackageManagement version
 	# https://www.powershellgallery.com/packages/PackageManagement
@@ -120,22 +121,22 @@ if ($null -eq (Get-Module -Name PSResourceGet -ListAvailable -ErrorAction Ignore
 		Remove-Item -Path $env:ProgramFiles\WindowsPowerShell\Modules\PackageManagement\fullclr -Force
 	}
 
-	$LatestPSResourceGetVersion = "2.2.5"
-	Write-Verbose -Message "PSResourceGet module doesn't exist" -Verbose
-	Write-Verbose -Message "Installing PSResourceGet $($LatestPSResourceGetVersion)" -Verbose
+	$LatestPowerShellGetVersion = "2.2.5"
+	Write-Verbose -Message "powershellget module doesn't exist" -Verbose
+	Write-Verbose -Message "Installing powershellget $($LatestPowerShellGetVersion)" -Verbose
 
 	# Download nupkg archive to expand it and install
 	$DownloadFolder = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
 	$Parameters = @{
-		Uri             = "https://psg-prod-eastus.azureedge.net/packages/PSResourceGet.$($LatestPSResourceGetVersion).nupkg"
-		OutFile         = "$DownloadFolder\PSResourceGet.nupkg"
+		Uri             = "https://psg-prod-eastus.azureedge.net/packages/powershellget.$($LatestPowerShellGetVersion).nupkg"
+		OutFile         = "$DownloadFolder\powershellget.nupkg"
 		UseBasicParsing = $true
 	}
 	Invoke-RestMethod @Parameters
 
-	Unblock-File -Path "$DownloadFolder\PSResourceGet.nupkg"
+	Unblock-File -Path "$DownloadFolder\powershellget.nupkg"
 
-	Rename-Item -Path "$DownloadFolder\PSResourceGet.nupkg" -NewName "PSResourceGet.zip" -Force
+	Rename-Item -Path "$DownloadFolder\powershellget.nupkg" -NewName "powershellget.zip" -Force
 
 	# Expanding
 	function ExtractZIPFolder
@@ -175,23 +176,23 @@ if ($null -eq (Get-Module -Name PSResourceGet -ListAvailable -ErrorAction Ignore
 	}
 	$DownloadFolder = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
 	$Parameters = @{
-		Source      = "$DownloadFolder\PSResourceGet.zip"
-		Destination = "$env:ProgramFiles\WindowsPowerShell\Modules\PSResourceGet"
+		Source      = "$DownloadFolder\powershellget.zip"
+		Destination = "$env:ProgramFiles\WindowsPowerShell\Modules\PowerShellGet"
 		Folders     = "en-US"
-		Files       = @("PSResourceGet.psd1", "PSGet.Format.ps1xml", "PSGet.Resource.psd1", "PSModule.psm1")
+		Files       = @("PowerShellGet.psd1", "PSGet.Format.ps1xml", "PSGet.Resource.psd1", "PSModule.psm1")
 	}
 	ExtractZIPFolder @Parameters
 
-	# We cannot import PSResourceGet without PackageManagement. So it has to be installed first
-	Import-Module PSResourceGet -Force
+	# We cannot import PowerShellGet without PackageManagement. So it has to be installed first
+	Import-Module -Name PowerShellGet -Force
 
 	if ($env:WT_SESSION)
 	{
-		Write-Verbose -Message "PSResourceGet & PackageManagement installed. Close this tab and open a new Windows Terminal tab, and re-run the script" -Verbose
+		Write-Verbose -Message "PowerShellGet & PackageManagement installed. Close this tab and open a new Windows Terminal tab, and re-run the script" -Verbose
 	}
 	else
 	{
-		Write-Verbose -Message "PSResourceGet & PackageManagement installed. Restart the PowerShell session, and re-run the script" -Verbose
+		Write-Verbose -Message "PowerShellGet & PackageManagement installed. Restart the PowerShell session, and re-run the script" -Verbose
 	}
 
 	break
@@ -204,18 +205,18 @@ else
 $CurrentStablePSResourceGetVersion = "2.2.5"
 if ([System.Version]$CurrentPowerShellGetVersion -lt [System.Version]$CurrentStablePSResourceGetVersion)
 {
-	Write-Verbose -Message "Installing PSResourceGet $($CurrentStablePSResourceGetVersion)" -Verbose
+	Write-Verbose -Message "Installing PowerShellGet $($CurrentStablePSResourceGetVersion)" -Verbose
 
-	Install-Module -Name PSResourceGet -Force
+	Install-Module -Name PowerShellGet -Force
 	Install-Module -Name PackageManagement -Force
 
 	if ($env:WT_SESSION)
 	{
-		Write-Verbose -Message "PSResourceGet $($CurrentStablePSResourceGetVersion) & PackageManagement installed. Close this tab and open a new Windows Terminal tab, and re-run the script" -Verbose
+		Write-Verbose -Message "PowerShellGet $($CurrentStablePSResourceGetVersion) & PackageManagement installed. Close this tab and open a new Windows Terminal tab, and re-run the script" -Verbose
 	}
 	else
 	{
-		Write-Verbose -Message "PSResourceGet $($CurrentStablePSResourceGetVersion) & PackageManagement installed. Restart the PowerShell session, and re-run the script" -Verbose
+		Write-Verbose -Message "PowerShellGet $($CurrentStablePSResourceGetVersion) & PackageManagement installed. Restart the PowerShell session, and re-run the script" -Verbose
 	}
 
 	break
