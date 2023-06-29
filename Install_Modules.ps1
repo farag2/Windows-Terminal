@@ -28,6 +28,8 @@ if ($null -eq (Get-PackageProvider -ListAvailable | Where-Object -FilterScript {
 	Install-PackageProvider -Name NuGet -Force
 }
 
+$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
+
 # Install the latest PowerShellGet version
 # https://www.powershellgallery.com/packages/PowerShellGet
 # https://github.com/PowerShell/PowerShellGet
