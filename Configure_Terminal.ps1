@@ -12,11 +12,7 @@ if ($psISE)
 
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 
-if (Test-Path -Path "$env:LOCALAPPDATA\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.json")
-{
-	$settings = "$env:LOCALAPPDATA\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.json"
-}
-else
+if (-not (Test-Path -Path "$env:LOCALAPPDATA\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.json"))
 {
 	Start-Process -FilePath wt
 
@@ -27,7 +23,7 @@ else
 
 try
 {
-	$Terminal = Get-Content -Path $settings -Encoding UTF8 -Force | ConvertFrom-Json
+	$Terminal = Get-Content -Path "$env:LOCALAPPDATA\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.json" -Encoding UTF8 -Force | ConvertFrom-Json
 }
 catch [System.Exception]
 {
@@ -377,16 +373,8 @@ if ([System.Version]$TerminalVersion -ge [System.Version]"1.16")
 	}
 }
 
-# Re-save in the UTF-8 without BOM encoding due to JSON must not has the BOM: https://datatracker.ietf.org/doc/html/rfc8259#section-8.1
-if ($Host.Version.Major -ne 5)
-{
-	ConvertTo-Json -InputObject $Terminal -Depth 4 | Set-Content -Path $settings -Encoding utf8nobom -Force
-}
-else
-{
-	ConvertTo-Json -InputObject $Terminal -Depth 4 | Set-Content -Path $settings -Encoding UTF8 -Force
-	Set-Content -Path $settings -Value (New-Object -TypeName System.Text.UTF8Encoding -ArgumentList $false).GetBytes($(Get-Content -Path $settings -Raw)) -Encoding Byte -Force
-}
+# Save in UTF-8 with BOM despite JSON must not has the BOM: https://datatracker.ietf.org/doc/html/rfc8259#section-8.1. Unless Terminal profile names which contains non-latin characters will have "?" instead of titles
+ConvertTo-Json -InputObject $Terminal -Depth 4 | Set-Content -Path "$env:LOCALAPPDATA\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.json" -Encoding UTF8 -Force
 
 # Set Windows Terminal as default terminal app to host the user interface for command-line applications
 $TerminalVersion = (Get-AppxPackage -Name Microsoft.WindowsTerminal).Version
