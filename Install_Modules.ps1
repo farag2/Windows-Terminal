@@ -226,8 +226,6 @@ else
 	$CurrentPowerShellGetVersion = ((Get-Module -Name PowerShellGet -ListAvailable).Version | Measure-Object -Maximum).Maximum.ToString()
 	$PowerShellGetVersion = ((Get-Module -Name PowerShellGet -ListAvailable).Version | Measure-Object -Maximum).Maximum.ToString()
 	Import-Module -Name PowerShellGet -RequiredVersion $PowerShellGetVersion -Force
-
-	Import-PackageProvider -Name PowerShellGet -RequiredVersion $PowerShellGetVersion -Force
 }
 
 if ([System.Version]$CurrentPowerShellGetVersion -lt [System.Version]$PowerShellGetModuleVersion)
@@ -241,9 +239,6 @@ if ([System.Version]$CurrentPowerShellGetVersion -lt [System.Version]$PowerShell
 	Install-Module -Name PackageManagement -AllowClobber -Force
 	$PackageManagementVersion = ((Get-Module -Name PackageManagement -ListAvailable).Version | Measure-Object -Maximum).Maximum.ToString()
 	Import-Module -Name PackageManagement -RequiredVersion $PackageManagementVersion -Force
-
-	# https://github.com/PowerShell/PowerShellGetv2/issues/246
-	Import-PackageProvider -Name PowerShellGet -RequiredVersion $PowerShellGetVersion -Force
 
 	if ($env:WT_SESSION)
 	{
@@ -278,9 +273,6 @@ if ($null -eq (Get-Module -Name Microsoft.PowerShell.PSResourceGet -ListAvailabl
 
 	$PowerShellGetVersion = ((Get-Module -Name PowerShellGet -ListAvailable).Version | Measure-Object -Maximum).Maximum.ToString()
 	Import-Module -Name PowerShellGet -RequiredVersion $PowerShellGetVersion -Force
-
-	# https://github.com/PowerShell/PowerShellGetv2/issues/246
-	Import-PackageProvider -Name PowerShellGet -RequiredVersion $PowerShellGetVersion -Force
 
 	Install-Module -Name Microsoft.PowerShell.PSResourceGet -AllowPrerelease -Force
 
