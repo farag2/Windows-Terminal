@@ -113,13 +113,13 @@ if (($null -eq (Get-Module -Name PackageManagement -ListAvailable -ErrorAction I
 	Get-ChildItem -Path $env:ProgramFiles\WindowsPowerShell\Modules\PackageManagement\fullclr -Force | Move-Item -Destination $env:ProgramFiles\WindowsPowerShell\Modules\PackageManagement -Force
 	Remove-Item -Path $env:ProgramFiles\WindowsPowerShell\Modules\PackageManagement\fullclr -Force
 
-	$Version = ((Get-Module -Name PackageManagement -ListAvailable).Version | Measure-Object -Maximum).Maximum.ToString()
-	Import-Module -Name PackageManagement -RequiredVersion $Version -Force
+	$PackageManagementVersion = ((Get-Module -Name PackageManagement -ListAvailable).Version | Measure-Object -Maximum).Maximum.ToString()
+	Import-Module -Name PackageManagement -RequiredVersion $PackageManagementVersion -Force
 }
 else
 {
-	$Version = ((Get-Module -Name PackageManagement -ListAvailable).Version | Measure-Object -Maximum).Maximum.ToString()
-	Import-Module -Name PackageManagement -RequiredVersion $Version -Force
+	$PackageManagementVersion = ((Get-Module -Name PackageManagement -ListAvailable).Version | Measure-Object -Maximum).Maximum.ToString()
+	Import-Module -Name PackageManagement -RequiredVersion $PackageManagementVersion -Force
 }
 #endregion PackageManagement
 
@@ -143,8 +143,8 @@ $CurrentPowerShellGetVersion = ((Get-Module -Name PowerShellGet -ListAvailable).
 
 if (($null -eq (Get-Module -Name PowerShellGet -ListAvailable -ErrorAction Ignore)))
 {
-	Write-Verbose -Message "powershellget module doesn't exist" -Verbose
-	Write-Verbose -Message "Installing powershellget $($LatestPowerShellGetVersion)" -Verbose
+	Write-Verbose -Message "PowerShellGet module doesn't exist" -Verbose
+	Write-Verbose -Message "Installing PowerShellGet $($LatestPowerShellGetVersion)" -Verbose
 
 	# Download nupkg archive to expand it and install
 	$Parameters = @{
@@ -220,8 +220,10 @@ if (($null -eq (Get-Module -Name PowerShellGet -ListAvailable -ErrorAction Ignor
 else
 {
 	$CurrentPowerShellGetVersion = ((Get-Module -Name PowerShellGet -ListAvailable).Version | Measure-Object -Maximum).Maximum.ToString()
-	$Version = ((Get-Module -Name PowerShellGet -ListAvailable).Version | Measure-Object -Maximum).Maximum.ToString()
-	Import-Module -Name PowerShellGet -RequiredVersion $Version -Force
+	$PowerShellGetVersion = ((Get-Module -Name PowerShellGet -ListAvailable).Version | Measure-Object -Maximum).Maximum.ToString()
+	Import-Module -Name PowerShellGet -RequiredVersion $PowerShellGetVersion -Force
+
+	Import-PackageProvider -Name PowerShellGet -RequiredVersion $PowerShellGetVersion -Force
 }
 
 if ([System.Version]$CurrentPowerShellGetVersion -lt [System.Version]$PowerShellGetModuleVersion)
@@ -229,12 +231,15 @@ if ([System.Version]$CurrentPowerShellGetVersion -lt [System.Version]$PowerShell
 	Write-Verbose -Message "Installing PowerShellGet $($LatestPowerShellGetVersion)" -Verbose
 
 	Install-Module -Name PowerShellGet -AllowClobber -Force
-	$Version = ((Get-Module -Name PowerShellGet -ListAvailable).Version | Measure-Object -Maximum).Maximum.ToString()
-	Import-Module -Name PowerShellGet -RequiredVersion $Version -Force
+	$PowerShellGetVersion = ((Get-Module -Name PowerShellGet -ListAvailable).Version | Measure-Object -Maximum).Maximum.ToString()
+	Import-Module -Name PowerShellGet -RequiredVersion $PowerShellGetVersion -Force
 
 	Install-Module -Name PackageManagement -AllowClobber -Force
-	$Version = ((Get-Module -Name PackageManagement -ListAvailable).Version | Measure-Object -Maximum).Maximum.ToString()
-	Import-Module -Name PackageManagement -RequiredVersion $Version -Force
+	$PackageManagementVersion = ((Get-Module -Name PackageManagement -ListAvailable).Version | Measure-Object -Maximum).Maximum.ToString()
+	Import-Module -Name PackageManagement -RequiredVersion $PackageManagementVersion -Force
+
+	# https://github.com/PowerShell/PowerShellGetv2/issues/246
+	Import-PackageProvider -Name PowerShellGet -RequiredVersion $PowerShellGetVersion -Force
 
 	if ($env:WT_SESSION)
 	{
@@ -267,10 +272,13 @@ if ($null -eq (Get-Module -Name Microsoft.PowerShell.PSResourceGet -ListAvailabl
 {
 	Write-Verbose -Message "Installing PSResourceGet $($LatestPSResourceGetVersion)" -Verbose
 
-	Install-Module -Name Microsoft.PowerShell.PSResourceGet -AllowPrerelease -Force
+	$PowerShellGetVersion = ((Get-Module -Name PowerShellGet -ListAvailable).Version | Measure-Object -Maximum).Maximum.ToString()
+	Import-Module -Name PowerShellGet -RequiredVersion $PowerShellGetVersion -Force
 
-	$Version = ((Get-Module -Name PowerShellGet -ListAvailable).Version | Measure-Object -Maximum).Maximum.ToString()
-	Import-Module -Name PowerShellGet -RequiredVersion $Version -Force
+	# https://github.com/PowerShell/PowerShellGetv2/issues/246
+	Import-PackageProvider -Name PowerShellGet -RequiredVersion $PowerShellGetVersion -Force
+
+	Install-Module -Name Microsoft.PowerShell.PSResourceGet -AllowPrerelease -Force
 
 	if ($env:WT_SESSION)
 	{
@@ -292,13 +300,10 @@ if ([System.Version]$CurrentPSResourceGetVersion -lt [System.Version]$LatestPSRe
 {
 	Write-Verbose -Message "Installing PSResourceGet $($LatestPSResourceGetVersion)" -Verbose
 
-	$Version = ((Get-Module -Name PowerShellGet -ListAvailable).Version | Measure-Object -Maximum).Maximum.ToString()
-	Import-Module -Name PowerShellGet -RequiredVersion $Version -Force
+	$PowerShellGetVersion = ((Get-Module -Name PowerShellGet -ListAvailable).Version | Measure-Object -Maximum).Maximum.ToString()
+	Import-Module -Name PowerShellGet -RequiredVersion $PowerShellGetVersion -Force
 
 	Install-Module -Name Microsoft.PowerShell.PSResourceGet -AllowPrerelease -Force
-
-	$Version = ((Get-Module -Name PowerShellGet -ListAvailable).Version | Measure-Object -Maximum).Maximum.ToString()
-	Import-Module -Name PowerShellGet -RequiredVersion $Version -Force
 
 	if ($env:WT_SESSION)
 	{
