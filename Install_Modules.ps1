@@ -228,11 +228,11 @@ if ([System.Version]$CurrentPowerShellGetVersion -lt [System.Version]$PowerShell
 {
 	Write-Verbose -Message "Installing PowerShellGet $($LatestPowerShellGetVersion)" -Verbose
 
-	Install-Module -Name PowerShellGet -Force
+	Install-Module -Name PowerShellGet -AllowClobber -Force
 	$Version = ((Get-Module -Name PowerShellGet -ListAvailable).Version | Measure-Object -Maximum).Maximum.ToString()
 	Import-Module -Name PowerShellGet -RequiredVersion $Version -Force
 
-	Install-Module -Name PackageManagement -Force
+	Install-Module -Name PackageManagement -AllowClobber -Force
 	$Version = ((Get-Module -Name PackageManagement -ListAvailable).Version | Measure-Object -Maximum).Maximum.ToString()
 	Import-Module -Name PackageManagement -RequiredVersion $Version -Force
 
