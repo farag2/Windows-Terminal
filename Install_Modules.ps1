@@ -31,7 +31,8 @@ if ($null -eq (Get-PackageProvider -ListAvailable | Where-Object -FilterScript {
 $DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
 
 # Install the latest PSResourceGet version
-# https://www.powershellgallery.com/packages/PSResourceGet
+# https://www.powershellgallery.com/packages/Microsoft.PowerShell.PSResourceGet
+# https://github.com/PowerShell/PSResourceGet
 $Parameters = @{
 	Uri             = "https://raw.githubusercontent.com/PowerShell/PSResourceGet/master/src/Microsoft.PowerShell.PSResourceGet.psd1"
 	OutFile         = "$DownloadsFolder\PSResourceGet.psd1"
@@ -49,7 +50,7 @@ if ([System.Version]$CurrentPowerShellGetVersion -lt [System.Version]$LatestPSRe
 	Write-Verbose -Message "Installing PSResourceGet $($LatestPSResourceGetVersion)" -Verbose
 
 	# We cannot install the preview build immediately due to the default 1.0.0.1 build doesn't support -AllowPrerelease
-	Install-Module -Name PSResourceGet -AllowPrerelease -Force
+	Install-Module -Name Microsoft.PowerShell.PSResourceGet -Force
 
 	if ($env:WT_SESSION)
 	{
