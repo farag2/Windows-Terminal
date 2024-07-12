@@ -118,6 +118,8 @@ if (($null -eq (Get-Module -Name PackageManagement -ListAvailable -ErrorAction I
 }
 else
 {
+	Write-Verbose -Message "PackageManagement module installed. Importing..." -Verbose
+
 	$PackageManagementVersion = ((Get-Module -Name PackageManagement -ListAvailable).Version | Measure-Object -Maximum).Maximum.ToString()
 	Import-Module -Name PackageManagement -RequiredVersion $PackageManagementVersion -Force
 }
@@ -219,6 +221,8 @@ if (($null -eq (Get-Module -Name PowerShellGet -ListAvailable -ErrorAction Ignor
 }
 else
 {
+	Write-Verbose -Message "PowerShellGet module installed. Importing..." -Verbose
+
 	$CurrentPowerShellGetVersion = ((Get-Module -Name PowerShellGet -ListAvailable).Version | Measure-Object -Maximum).Maximum.ToString()
 	$PowerShellGetVersion = ((Get-Module -Name PowerShellGet -ListAvailable).Version | Measure-Object -Maximum).Maximum.ToString()
 	Import-Module -Name PowerShellGet -RequiredVersion $PowerShellGetVersion -Force
