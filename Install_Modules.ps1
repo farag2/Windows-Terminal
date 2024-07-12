@@ -245,7 +245,10 @@ if ($null -eq (Get-Module -Name Microsoft.PowerShell.PSResourceGet -ListAvailabl
 {
 	Write-Verbose -Message "Installing PSResourceGet $($LatestPSResourceGetVersion)" -Verbose
 
-	Install-Module -Name Microsoft.PowerShell.PSResourceGet -Force
+	$Version = ((Get-Module -Name PowerShellGet -ListAvailable).Version | Measure-Object -Maximum).Maximum.ToString()
+	Import-Module -Name PowerShellGet -RequiredVersion $Version -Force
+
+	Install-Module -Name Microsoft.PowerShell.PSResourceGet -AllowPrerelease -Force
 
 	if ($env:WT_SESSION)
 	{
@@ -266,6 +269,9 @@ else
 if ([System.Version]$CurrentPSResourceGetVersion -lt [System.Version]$LatestPSResourceGetVersion)
 {
 	Write-Verbose -Message "Installing PSResourceGet $($CurrentPSResourceGetVersion)" -Verbose
+
+	$Version = ((Get-Module -Name PowerShellGet -ListAvailable).Version | Measure-Object -Maximum).Maximum.ToString()
+	Import-Module -Name PowerShellGet -RequiredVersion $Version -Force
 
 	Install-Module -Name Microsoft.PowerShell.PSResourceGet -AllowPrerelease -Force
 
