@@ -14,6 +14,8 @@ Set-ExecutionPolicy -ExecutionPolicy Bypass -Force
 
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 
+Set-PSResourceRepository -Name PSGallery -Trusted
+
 # Installing the latest NuGet
 if (-not (Test-Path -Path "$env:ProgramFiles\PackageManagement\ProviderAssemblies\nuget\*\Microsoft.PackageManagement.NuGetProvider.dll"))
 {
