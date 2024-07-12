@@ -40,16 +40,14 @@ $Parameters = @{
 	Verbose         = $true
 }
 Invoke-WebRequest @Parameters
-
 $LatestPSResourceGetVersion = (Import-PowerShellDataFile -Path "$DownloadsFolder\PSResourceGet.psd1").ModuleVersion
 
 Remove-Item -Path "$DownloadsFolder\PSResourceGet.psd1" -Force
 
-if ([System.Version]$CurrentPowerShellGetVersion -lt [System.Version]$LatestPSResourceGetVersion)
+if ($null -eq (Get-Module -Name Microsoft.PowerShell.PSResourceGet -ListAvailable -ErrorAction Ignore))
 {
 	Write-Verbose -Message "Installing PSResourceGet $($LatestPSResourceGetVersion)" -Verbose
 
-	# We cannot install the preview build immediately due to the default 1.0.0.1 build doesn't support -AllowPrerelease
 	Install-Module -Name Microsoft.PowerShell.PSResourceGet -Force
 
 	if ($env:WT_SESSION)
@@ -59,6 +57,28 @@ if ([System.Version]$CurrentPowerShellGetVersion -lt [System.Version]$LatestPSRe
 	else
 	{
 		Write-Verbose -Message "PSResourceGet $($LatestPSResourceGetVersion) installed. Restart the PowerShell session, and re-run the script" -Verbose
+	}
+
+	break
+}
+else
+{
+	$CurrentPSResourceGetVersion = ((Get-Module -Name Microsoft.PowerShell.PSResourceGet -ListAvailable).Version | Measure-Object -Maximum).Maximum.ToString()
+}
+
+if ([System.Version]$CurrentPSResourceGetVersion -lt [System.Version]$LatestPSResourceGetVersion)
+{
+	Write-Verbose -Message "Installing PSResourceGet $($CurrentPSResourceGetVersion)" -Verbose
+
+	Install-Module -Name Microsoft.PowerShell.PSResourceGet -Force
+
+	if ($env:WT_SESSION)
+	{
+		Write-Verbose -Message "PSResourceGet $($CurrentPSResourceGetVersion) installed. Close this tab and open a new Windows Terminal tab, and re-run the script" -Verbose
+	}
+	else
+	{
+		Write-Verbose -Message "PSResourceGet $($CurrentPSResourceGetVersion) installed. Restart the PowerShell session, and re-run the script" -Verbose
 	}
 
 	break
