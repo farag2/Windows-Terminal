@@ -268,7 +268,10 @@ else
 
 if ([System.Version]$CurrentPSResourceGetVersion -lt [System.Version]$LatestPSResourceGetVersion)
 {
-	Write-Verbose -Message "Installing PSResourceGet $($CurrentPSResourceGetVersion)" -Verbose
+	Write-Verbose -Message "Installing PSResourceGet $($LatestPSResourceGetVersion)" -Verbose
+
+	$Version = ((Get-Module -Name PowerShellGet -ListAvailable).Version | Measure-Object -Maximum).Maximum.ToString()
+	Import-Module -Name PowerShellGet -RequiredVersion $Version -Force
 
 	Install-Module -Name Microsoft.PowerShell.PSResourceGet -AllowPrerelease -Force
 
