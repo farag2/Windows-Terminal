@@ -70,18 +70,22 @@ if ([System.Version]$CurrentPSResourceGetVersion -lt [System.Version]$LatestPSRe
 {
 	Write-Verbose -Message "Installing PSResourceGet $($CurrentPSResourceGetVersion)" -Verbose
 
-	Install-Module -Name Microsoft.PowerShell.PSResourceGet -Force
+	Install-Module -Name Microsoft.PowerShell.PSResourceGet -AllowPrerelease -Force
 
 	if ($env:WT_SESSION)
 	{
-		Write-Verbose -Message "PSResourceGet $($CurrentPSResourceGetVersion) installed. Close this tab and open a new Windows Terminal tab, and re-run the script" -Verbose
+		Write-Verbose -Message "PSResourceGet $($LatestPSResourceGetVersion) installed. Close this tab and open a new Windows Terminal tab, and re-run the script" -Verbose
 	}
 	else
 	{
-		Write-Verbose -Message "PSResourceGet $($CurrentPSResourceGetVersion) installed. Restart the PowerShell session, and re-run the script" -Verbose
+		Write-Verbose -Message "PSResourceGet $($LatestPSResourceGetVersion) installed. Restart the PowerShell session, and re-run the script" -Verbose
 	}
 
 	break
+}
+else
+{
+	Write-Verbose -Message "PSResourceGet $($LatestPSResourceGetVersion) already installed" -Verbose
 }
 
 # Installing the latest PSReadLine
