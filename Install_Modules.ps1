@@ -182,7 +182,7 @@ if ($null -eq (Get-Module -Name PowerShellGet -ListAvailable -ErrorAction Ignore
 	ExtractZIPFolder @Parameters
 
 	# We cannot import PowerShellGet without PackageManagement. So it has to be installed first
-	Import-Module -Name PowerShellGet -Force
+	Import-Module -Name PowerShellGet -RequiredVersion $LatestPowerShellGetVersion -Force
 
 	if ($env:WT_SESSION)
 	{
@@ -198,6 +198,8 @@ if ($null -eq (Get-Module -Name PowerShellGet -ListAvailable -ErrorAction Ignore
 else
 {
 	$CurrentPowerShellGetVersion = ((Get-Module -Name PowerShellGet -ListAvailable).Version | Measure-Object -Maximum).Maximum.ToString()
+	$Version = ((Get-Module -Name PowerShellGet -ListAvailable).Version | Measure-Object -Maximum).Maximum.ToString()
+	Import-Module -Name PowerShellGet -RequiredVersion $Version -Force
 }
 
 $CurrentStablePowerShellGetGetVersion = "2.2.5"
@@ -206,7 +208,12 @@ if ([System.Version]$CurrentPowerShellGetVersion -lt [System.Version]$CurrentSta
 	Write-Verbose -Message "Installing PowerShellGet $($CurrentStablePowerShellGetGetVersion)" -Verbose
 
 	Install-Module -Name PowerShellGet -Force
+	$Version = ((Get-Module -Name PowerShellGet -ListAvailable).Version | Measure-Object -Maximum).Maximum.ToString()
+	Import-Module -Name PowerShellGet -RequiredVersion $Version -Force
+
 	Install-Module -Name PackageManagement -Force
+	$Version = ((Get-Module -Name PackageManagement -ListAvailable).Version | Measure-Object -Maximum).Maximum.ToString()
+	Import-Module -Name PackageManagement -RequiredVersion $Version -Force
 
 	if ($env:WT_SESSION)
 	{
