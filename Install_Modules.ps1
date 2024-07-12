@@ -117,6 +117,14 @@ if ($null -eq (Get-Module -Name PowerShellGet -ListAvailable -ErrorAction Ignore
 
 		Get-ChildItem -Path $env:ProgramFiles\WindowsPowerShell\Modules\PackageManagement\fullclr -Force | Move-Item -Destination $env:ProgramFiles\WindowsPowerShell\Modules\PackageManagement -Force
 		Remove-Item -Path $env:ProgramFiles\WindowsPowerShell\Modules\PackageManagement\fullclr -Force
+
+		$Version = ((Get-Module -Name PackageManagement -ListAvailable).Version | Measure-Object -Maximum).Maximum.ToString()
+		Import-Module -Name PackageManagement -RequiredVersion $Version -Force
+	}
+	else
+	{
+		$Version = ((Get-Module -Name PackageManagement -ListAvailable).Version | Measure-Object -Maximum).Maximum.ToString()
+		Import-Module -Name PackageManagement -RequiredVersion $Version -Force
 	}
 
 	$LatestPowerShellGetVersion = "2.2.5"
