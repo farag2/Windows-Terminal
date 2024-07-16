@@ -21,7 +21,7 @@ if (-not (Test-Path -Path "$env:ProgramFiles\PackageManagement\ProviderAssemblie
 
 	Install-PackageProvider -Name NuGet -Force
 }
-if ($null -eq (Get-PackageProvider -ListAvailable | Where-Object -FilterScript {$_.Name -ceq "NuGet"} -ErrorAction Ignore))
+if (-not (Get-PackageProvider -ListAvailable | Where-Object -FilterScript {$_.Name -eq "NuGet"} -ErrorAction Ignore))
 {
 	Write-Verbose -Message "Installing NuGet" -Verbose
 
@@ -41,77 +41,26 @@ $Parameters = @{
 	Verbose         = $true
 }
 Invoke-WebRequest @Parameters
-
 $LatestPackageManagementVersion = (Import-PowerShellDataFile -Path "$DownloadsFolder\PackageManagement.psd1").ModuleVersion
 
 Remove-Item -Path "$DownloadsFolder\PackageManagement.psd1" -Force
-# If PackageManagement doesn't exist or its' version is lower than the latest one
+
 $CurrentPackageManagementVersion = ((Get-Module -Name PackageManagement -ListAvailable).Version | Measure-Object -Maximum).Maximum.ToString()
 
-if (($null -eq (Get-Module -Name PackageManagement -ListAvailable -ErrorAction Ignore)) -or ([System.Version]$CurrentPackageManagementVersion -lt [System.Version]$LatestPackageManagementVersion))
+if (-not (Get-Module -Name PackageManagement -ListAvailable -ErrorAction Ignore))
 {
-	Write-Verbose -Message "PackageManagement module doesn't exist" -Verbose
+	Write-Verbose -Message "Install PackageManagement manually" -Verbose
+	Write-Verbose -Message "https://www.powershellgallery.com/packages/PackageManagement" -Verbose
+	Write-Verbose -Message "https://learn.microsoft.com/en-us/powershell/gallery/how-to/working-with-packages/manual-download#installing-powershell-modules-from-a-nuget-package" -Verbose
+
+	exit
+}
+
+if ([System.Version]$CurrentPackageManagementVersion -lt [System.Version]$LatestPackageManagementVersion)
+{
 	Write-Verbose -Message "Installing PackageManagement $($LatestPackageManagementVersion)" -Verbose
 
-	# Download nupkg archive to expand it and install
-	$Parameters = @{
-		Uri             = "https://psg-prod-eastus.azureedge.net/packages/packagemanagement.$($LatestPackageManagementVersion).nupkg"
-		OutFile         = "$DownloadsFolder\packagemanagement.nupkg"
-		UseBasicParsing = $true
-	}
-	Invoke-RestMethod @Parameters
-
-	Unblock-File -Path "$DownloadsFolder\packagemanagement.nupkg"
-
-	Rename-Item -Path "$DownloadsFolder\packagemanagement.nupkg" -NewName "packagemanagement.zip" -Force
-
-	# Expanding
-	function ExtractZIPFolder
-	{
-		[CmdletBinding()]
-		param
-		(
-			[string]
-			$Source,
-
-			[string]
-			$Destination,
-
-			[string[]]
-			$Folders,
-
-			[string[]]
-			$Files
-		)
-
-		Add-Type -Assembly System.IO.Compression.FileSystem
-
-		$ZIP = [IO.Compression.ZipFile]::OpenRead($Source)
-		$ZIP.Entries | Where-Object -FilterScript {($_.FullName -like "$($Folders)/*.*") -or ($Files -contains $_.FullName)} | ForEach-Object -Process {
-		$File = Join-Path -Path $Destination -ChildPath $_.FullName
-			$Parent = Split-Path -Path $File -Parent
-
-			if (-not (Test-Path -Path $Parent))
-			{
-				New-Item -Path $Parent -Type Directory -Force
-			}
-
-			[IO.Compression.ZipFileExtensions]::ExtractToFile($_, $File, $true)
-		}
-
-		$ZIP.Dispose()
-	}
-
-	$Parameters = @{
-		Source      = "$DownloadsFolder\packagemanagement.zip"
-		Destination = "$env:ProgramFiles\WindowsPowerShell\Modules\PackageManagement"
-		Folders     = "fullclr"
-		Files       = @("PackageManagement.format.ps1xml", "PackageManagement.psd1", "PackageManagement.psm1", "PackageManagement.Resources.psd1", "PackageProviderFunctions.psm1")
-	}
-	ExtractZIPFolder @Parameters
-
-	Get-ChildItem -Path $env:ProgramFiles\WindowsPowerShell\Modules\PackageManagement\fullclr -Force | Move-Item -Destination $env:ProgramFiles\WindowsPowerShell\Modules\PackageManagement -Force
-	Remove-Item -Path $env:ProgramFiles\WindowsPowerShell\Modules\PackageManagement\fullclr -Force
+	Update-Module -Name PackageManagement -RequiredVersion $LatestPackageManagementVersion -Force
 
 	$PackageManagementVersion = ((Get-Module -Name PackageManagement -ListAvailable).Version | Measure-Object -Maximum).Maximum.ToString()
 	Import-Module -Name PackageManagement -RequiredVersion $PackageManagementVersion -Force
@@ -135,121 +84,46 @@ $Parameters = @{
 	Verbose         = $true
 }
 Invoke-WebRequest @Parameters
+$LatestPowerShellGetModuleVersion = (Import-PowerShellDataFile -Path "$DownloadsFolder\PackageManagement.psd1").ModuleVersion
 
-$PowerShellGetModuleVersion = (Import-PowerShellDataFile -Path "$DownloadsFolder\PackageManagement.psd1").ModuleVersion
-$PowerShellGetPrereleaseVersion = (Import-PowerShellDataFile -Path "$DownloadsFolder\PackageManagement.psd1").PrivateData.PSData.Prerelease
-$LatestPowerShellGetVersion = "$PowerShellGetModuleVersion-$PowerShellGetPrereleaseVersion"
-
-# If PackageManagement doesn't exist or its' version is lower than the latest one
 $CurrentPowerShellGetVersion = ((Get-Module -Name PowerShellGet -ListAvailable).Version | Measure-Object -Maximum).Maximum.ToString()
 
-if (($null -eq (Get-Module -Name PowerShellGet -ListAvailable -ErrorAction Ignore)))
+if ((-not (Get-Module -Name PowerShellGet -ListAvailable -ErrorAction Ignore)))
 {
-	Write-Verbose -Message "PowerShellGet module doesn't exist" -Verbose
-	Write-Verbose -Message "Installing PowerShellGet $($LatestPowerShellGetVersion)" -Verbose
+	Write-Verbose -Message "Install PowerShellGet manually" -Verbose
+	Write-Verbose -Message "https://www.powershellgallery.com/packages/PowerShellGet" -Verbose
+	Write-Verbose -Message "https://learn.microsoft.com/en-us/powershell/gallery/how-to/working-with-packages/manual-download#installing-powershell-modules-from-a-nuget-package" -Verbose
 
-	# Download nupkg archive to expand it and install
-	$Parameters = @{
-		Uri             = "https://psg-prod-eastus.azureedge.net/packages/powershellget.$($LatestPowerShellGetVersion).nupkg"
-		OutFile         = "$DownloadsFolder\powershellget.nupkg"
-		UseBasicParsing = $true
-	}
-	Invoke-RestMethod @Parameters
-
-	Unblock-File -Path "$DownloadsFolder\powershellget.nupkg"
-
-	Rename-Item -Path "$DownloadsFolder\powershellget.nupkg" -NewName "powershellget.zip" -Force
-
-	# Expanding
-	function ExtractZIPFolder
-	{
-		[CmdletBinding()]
-		param
-		(
-			[string]
-			$Source,
-
-			[string]
-			$Destination,
-
-			[string[]]
-			$Folders,
-
-			[string[]]
-			$Files
-		)
-
-		Add-Type -Assembly System.IO.Compression.FileSystem
-
-		$ZIP = [IO.Compression.ZipFile]::OpenRead($Source)
-		$ZIP.Entries | Where-Object -FilterScript {($_.FullName -like "$($Folders)/*.*") -or ($Files -contains $_.FullName)} | ForEach-Object -Process {
-		$File = Join-Path -Path $Destination -ChildPath $_.FullName
-			$Parent = Split-Path -Path $File -Parent
-
-			if (-not (Test-Path -Path $Parent))
-			{
-				New-Item -Path $Parent -Type Directory -Force
-			}
-
-			[IO.Compression.ZipFileExtensions]::ExtractToFile($_, $File, $true)
-		}
-
-		$ZIP.Dispose()
-	}
-
-	$Parameters = @{
-		Source      = "$DownloadsFolder\powershellget.zip"
-		Destination = "$env:ProgramFiles\WindowsPowerShell\Modules\PowerShellGet"
-		Folders     = "en-US"
-		Files       = @("PowerShellGet.psd1", "PSGet.Format.ps1xml", "PSGet.Resource.psd1", "PSModule.psm1")
-	}
-	ExtractZIPFolder @Parameters
-
-	# We cannot import PowerShellGet without PackageManagement. So it has to be installed first
-	Import-Module -Name PowerShellGet -RequiredVersion $LatestPowerShellGetVersion -Force
-
-	if ($env:WT_SESSION)
-	{
-		Write-Verbose -Message "PowerShellGet & PackageManagement installed. Close this tab and open a new Windows Terminal tab, and re-run the script" -Verbose
-	}
-	else
-	{
-		Write-Verbose -Message "PowerShellGet & PackageManagement installed. Restart the PowerShell session, and re-run the script" -Verbose
-	}
-
-	break
+	exit
 }
 else
 {
 	Write-Verbose -Message "PowerShellGet module installed. Importing..." -Verbose
 
-	$CurrentPowerShellGetVersion = ((Get-Module -Name PowerShellGet -ListAvailable).Version | Measure-Object -Maximum).Maximum.ToString()
 	$PowerShellGetVersion = ((Get-Module -Name PowerShellGet -ListAvailable).Version | Measure-Object -Maximum).Maximum.ToString()
-	Import-Module -Name PowerShellGet -RequiredVersion $PowerShellGetVersion -Force
+	Import-Module -Name PowerShellGet -RequiredVersion $LatestPowerShellGetVersion -Force
 }
 
-if ([System.Version]$CurrentPowerShellGetVersion -lt [System.Version]$PowerShellGetModuleVersion)
+if ([System.Version]$CurrentPowerShellGetVersion -lt [System.Version]$LatestPowerShellGetModuleVersion)
 {
-	Write-Verbose -Message "Installing PowerShellGet $($LatestPowerShellGetVersion)" -Verbose
+	Write-Verbose -Message "Installing PowerShellGet $($LatestPowerShellGetModuleVersion)" -Verbose
 
-	Install-Module -Name PowerShellGet -AllowClobber -Force
+	Update-Module -Name PowerShellGet -AllowPrerelease -Force
+
 	$PowerShellGetVersion = ((Get-Module -Name PowerShellGet -ListAvailable).Version | Measure-Object -Maximum).Maximum.ToString()
 	Import-Module -Name PowerShellGet -RequiredVersion $PowerShellGetVersion -Force
 
-	Install-Module -Name PackageManagement -AllowClobber -Force
 	$PackageManagementVersion = ((Get-Module -Name PackageManagement -ListAvailable).Version | Measure-Object -Maximum).Maximum.ToString()
 	Import-Module -Name PackageManagement -RequiredVersion $PackageManagementVersion -Force
 
 	if ($env:WT_SESSION)
 	{
-		Write-Verbose -Message "PowerShellGet $($LatestPowerShellGetVersion) & PackageManagement installed. Close this tab and open a new Windows Terminal tab, and re-run the script" -Verbose
+		Write-Verbose -Message "PowerShellGet $($PowerShellGetModuleVersion) & PackageManagement installed. Close this tab and open a new Windows Terminal tab, and re-run the script" -Verbose
 	}
 	else
 	{
-		Write-Verbose -Message "PowerShellGet $LatestPowerShellGetVersion) & PackageManagement installed. Restart the PowerShell session, and re-run the script" -Verbose
+		Write-Verbose -Message "PowerShellGet $PowerShellGetModuleVersion) & PackageManagement installed. Restart the PowerShell session, and re-run the script" -Verbose
 	}
-
-	break
 }
 #endregion PowerShellGet
 
@@ -267,7 +141,7 @@ $LatestPSResourceGetVersion = (Import-PowerShellDataFile -Path "$DownloadsFolder
 
 Remove-Item -Path "$DownloadsFolder\PSResourceGet.psd1" -Force
 
-if ($null -eq (Get-Module -Name Microsoft.PowerShell.PSResourceGet -ListAvailable -ErrorAction Ignore))
+if (-not (Get-Module -Name Microsoft.PowerShell.PSResourceGet -ListAvailable -ErrorAction Ignore))
 {
 	Write-Verbose -Message "Installing PSResourceGet $($LatestPSResourceGetVersion)" -Verbose
 
@@ -296,10 +170,7 @@ if ([System.Version]$CurrentPSResourceGetVersion -lt [System.Version]$LatestPSRe
 {
 	Write-Verbose -Message "Installing PSResourceGet $($LatestPSResourceGetVersion)" -Verbose
 
-	$PowerShellGetVersion = ((Get-Module -Name PowerShellGet -ListAvailable).Version | Measure-Object -Maximum).Maximum.ToString()
-	Import-Module -Name PowerShellGet -RequiredVersion $PowerShellGetVersion -Force
-
-	Install-Module -Name Microsoft.PowerShell.PSResourceGet -AllowPrerelease -Force
+	Update-Module -Name Microsoft.PowerShell.PSResourceGet -AllowPrerelease -Force
 
 	if ($env:WT_SESSION)
 	{
@@ -326,7 +197,7 @@ $Parameters = @{
 }
 $LatestPSReadLineVersion = (Invoke-RestMethod @Parameters).tag_name.Replace("v", "") | Select-Object -First 1
 
-if ($null -eq (Get-Module -Name PSReadline -ListAvailable -ErrorAction Ignore))
+if (-not (Get-Module -Name PSReadline -ListAvailable -ErrorAction Ignore))
 {
 	Write-Verbose -Message "PSReadline module doesn't exist" -Verbose
 	Write-Verbose -Message "Installing PSReadline $($LatestPSReadLineVersion)" -Verbose
@@ -367,21 +238,4 @@ if ([System.Version]$CurrentPSReadlineVersion -lt [System.Version]$LatestPSReadL
 	}
 
 	break
-}
-
-if ([System.Version]$CurrentPSReadlineVersion -eq [System.Version]$LatestPSReadLineVersion)
-{
-	Write-Verbose -Message "Removing old PSReadLine modules" -Verbose
-
-	# Removing all PSReadLine folders except the latest and the default ones
-	Get-Childitem -Path "$env:ProgramFiles\WindowsPowerShell\Modules\PSReadLine" -Force | Where-Object -FilterScript {$_.Name -ne $LatestPSReadLineVersion} | Remove-Item -Recurse -Force
-
-	if ($env:WT_SESSION)
-	{
-		Write-Verbose -Message "All is done. Close this tab and open a new Windows Terminal tab" -Verbose
-	}
-	else
-	{
-		Write-Verbose -Message "All is done. Restart the PowerShell session" -Verbose
-	}
 }
