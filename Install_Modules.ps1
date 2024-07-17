@@ -86,6 +86,8 @@ $Parameters = @{
 Invoke-WebRequest @Parameters
 $LatestPowerShellGetModuleVersion = (Import-PowerShellDataFile -Path "$DownloadsFolder\PackageManagement.psd1").ModuleVersion
 
+Remove-Item -Path "$DownloadsFolder\PackageManagement.psd1" -Force
+
 $CurrentPowerShellGetVersion = ((Get-Module -Name PowerShellGet -ListAvailable).Version | Measure-Object -Maximum).Maximum.ToString()
 
 if ((-not (Get-Module -Name PowerShellGet -ListAvailable -ErrorAction Ignore)))
@@ -199,7 +201,6 @@ $LatestPSReadLineVersion = (Invoke-RestMethod @Parameters).tag_name.Replace("v",
 
 if (-not (Get-Module -Name PSReadline -ListAvailable -ErrorAction Ignore))
 {
-	Write-Verbose -Message "PSReadline module doesn't exist" -Verbose
 	Write-Verbose -Message "Installing PSReadline $($LatestPSReadLineVersion)" -Verbose
 
 	Install-Module -Name PSReadline -Force
