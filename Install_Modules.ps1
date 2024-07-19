@@ -190,6 +190,8 @@ else
 	Write-Verbose -Message "PSResourceGet $($LatestPSResourceGetVersion) already installed" -Verbose
 }
 
+Set-PSRepository -Name PSGallery -InstallationPolicy Trusted
+
 # Installing the latest PSReadLine
 # https://github.com/PowerShell/PSReadLine/releases
 # https://www.powershellgallery.com/packages/PSReadLine
