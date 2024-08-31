@@ -247,6 +247,16 @@ else
 	$Terminal.profiles.defaults | Add-Member -MemberType NoteProperty -Name elevate -Value $true -Force
 }
 
+# Run profile as Administrator by default
+if ($Terminal.profiles.defaults.experimental.repositionCursorWithMouse)
+{
+	$Terminal.profiles.defaults.experimental.repositionCursorWithMouse = $true
+}
+else
+{
+	$Terminal.profiles.defaults | Add-Member -MemberType NoteProperty -Name experimental.repositionCursorWithMouse -Value $true -Force
+}
+
 # Set "FiraCode NF" as a default font
 [System.Reflection.Assembly]::LoadWithPartialName("System.Drawing") | Out-Null
 
