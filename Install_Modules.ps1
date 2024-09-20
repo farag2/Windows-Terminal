@@ -41,7 +41,7 @@ $Parameters = @{
 	Verbose         = $true
 }
 Invoke-WebRequest @Parameters
-$LatestPackageManagementVersion = (Import-PowerShellDataFile -Path "$DownloadsFolder\PackageManagement.psd1").ModuleVersion
+$LatestPackageManagementVersion = [System.Version](Import-PowerShellDataFile -Path "$DownloadsFolder\PackageManagement.psd1").ModuleVersion
 
 Remove-Item -Path "$DownloadsFolder\PackageManagement.psd1" -Force
 
@@ -56,7 +56,7 @@ if (-not (Get-Module -Name PackageManagement -ListAvailable -ErrorAction Ignore)
 	exit
 }
 
-if ([System.Version]$CurrentPackageManagementVersion -lt [System.Version]$LatestPackageManagementVersion)
+if ([System.Version]$CurrentPackageManagementVersion -lt $LatestPackageManagementVersion)
 {
 	Write-Verbose -Message "Installing PackageManagement $($LatestPackageManagementVersion)" -Verbose
 
@@ -94,8 +94,8 @@ else
 	Import-Module -Name PowerShellGet -RequiredVersion $LatestPowerShellGetVersion -Force
 }
 
-$CurrentPowerShellGetVersion = ((Get-Module -Name PowerShellGet -ListAvailable).Version | Measure-Object -Maximum).Maximum.ToString()
-if ([System.Version]$CurrentPowerShellGetVersion -lt [System.Version]2.2.5)
+$CurrentPowerShellGetVersion = [System.Version]((Get-Module -Name PowerShellGet -ListAvailable).Version | Measure-Object -Maximum).Maximum.ToString()
+if ($CurrentPowerShellGetVersion -lt [System.Version]"2.2.5")
 {
 	Write-Verbose -Message "Installing PowerShellGet $($LatestPowerShellGetModuleVersion)" -Verbose
 
@@ -128,7 +128,7 @@ $Parameters = @{
 	Verbose         = $true
 }
 Invoke-WebRequest @Parameters
-$LatestPSResourceGetVersion = (Import-PowerShellDataFile -Path "$DownloadsFolder\PSResourceGet.psd1").ModuleVersion
+$LatestPSResourceGetVersion = [System.Version](Import-PowerShellDataFile -Path "$DownloadsFolder\PSResourceGet.psd1").ModuleVersion
 
 Remove-Item -Path "$DownloadsFolder\PSResourceGet.psd1" -Force
 
@@ -154,10 +154,10 @@ if (-not (Get-Module -Name Microsoft.PowerShell.PSResourceGet -ListAvailable -Er
 }
 else
 {
-	$CurrentPSResourceGetVersion = ((Get-Module -Name Microsoft.PowerShell.PSResourceGet -ListAvailable).Version | Measure-Object -Maximum).Maximum.ToString()
+	$CurrentPSResourceGetVersion = [System.Version]((Get-Module -Name Microsoft.PowerShell.PSResourceGet -ListAvailable).Version | Measure-Object -Maximum).Maximum.ToString()
 }
 
-if ([System.Version]$CurrentPSResourceGetVersion -lt [System.Version]$LatestPSResourceGetVersion)
+if ($CurrentPSResourceGetVersion -lt $LatestPSResourceGetVersion)
 {
 	Write-Verbose -Message "Installing PSResourceGet $($LatestPSResourceGetVersion)" -Verbose
 
@@ -188,7 +188,7 @@ $Parameters = @{
 	Uri            = "https://api.github.com/repos/PowerShell/PSReadLine/releases/latest"
 	UseBasicParsing = $true
 }
-$LatestPSReadLineVersion = (Invoke-RestMethod @Parameters).tag_name.Replace("v", "") | Select-Object -First 1
+$LatestPSReadLineVersion = [System.Version]((Invoke-RestMethod @Parameters).tag_name.Replace("v", "") | Select-Object -First 1)
 
 if (-not (Get-Module -Name PSReadline -ListAvailable -ErrorAction Ignore))
 {
@@ -214,7 +214,7 @@ else
 }
 
 # Installing the latest PSReadLine
-if ([System.Version]$CurrentPSReadlineVersion -lt [System.Version]$LatestPSReadLineVersion)
+if ([System.Version]$CurrentPSReadlineVersion -lt $LatestPSReadLineVersion)
 {
 	Write-Verbose -Message "Installing PSReadLine $($LatestPSReadLineVersion)" -Verbose
 
