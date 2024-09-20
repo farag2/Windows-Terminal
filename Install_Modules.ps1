@@ -122,15 +122,11 @@ if ($CurrentPowerShellGetVersion -lt [System.Version]"2.2.5")
 # https://www.powershellgallery.com/packages/Microsoft.PowerShell.PSResourceGet
 # https://github.com/PowerShell/PSResourceGet
 $Parameters = @{
-	Uri             = "https://raw.githubusercontent.com/PowerShell/PSResourceGet/master/src/Microsoft.PowerShell.PSResourceGet.psd1"
-	OutFile         = "$DownloadsFolder\PSResourceGet.psd1"
+	Uri             = "https://api.github.com/repos/PowerShell/PSResourceGet/releases/latest"
 	UseBasicParsing = $true
 	Verbose         = $true
 }
-Invoke-WebRequest @Parameters
-$LatestPSResourceGetVersion = [System.Version](Import-PowerShellDataFile -Path "$DownloadsFolder\PSResourceGet.psd1").ModuleVersion
-
-Remove-Item -Path "$DownloadsFolder\PSResourceGet.psd1" -Force
+$LatestPSResourceGetVersion = (Invoke-RestMethod @Parameters).tag_name.Replace("v", "")
 
 if (-not (Get-Module -Name Microsoft.PowerShell.PSResourceGet -ListAvailable -ErrorAction Ignore))
 {
