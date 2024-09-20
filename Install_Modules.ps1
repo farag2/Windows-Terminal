@@ -77,19 +77,7 @@ else
 #region PowerShellGet
 # Install latest PowerShellGet version
 # https://www.powershellgallery.com/packages/PowerShellGet
-$Parameters = @{
-	Uri             = "https://raw.githubusercontent.com/PowerShell/PowerShellGet/master/src/PowerShellGet.psd1"
-	OutFile         = "$DownloadsFolder\PackageManagement.psd1"
-	UseBasicParsing = $true
-	Verbose         = $true
-}
-Invoke-WebRequest @Parameters
-$LatestPowerShellGetModuleVersion = (Import-PowerShellDataFile -Path "$DownloadsFolder\PackageManagement.psd1").ModuleVersion
-
-Remove-Item -Path "$DownloadsFolder\PackageManagement.psd1" -Force
-
-$CurrentPowerShellGetVersion = ((Get-Module -Name PowerShellGet -ListAvailable).Version | Measure-Object -Maximum).Maximum.ToString()
-
+# https://github.com/PowerShell/PowerShellGet
 if ((-not (Get-Module -Name PowerShellGet -ListAvailable -ErrorAction Ignore)))
 {
 	Write-Verbose -Message "Install PowerShellGet manually" -Verbose
@@ -106,11 +94,12 @@ else
 	Import-Module -Name PowerShellGet -RequiredVersion $LatestPowerShellGetVersion -Force
 }
 
-if ([System.Version]$CurrentPowerShellGetVersion -lt [System.Version]$LatestPowerShellGetModuleVersion)
+$CurrentPowerShellGetVersion = ((Get-Module -Name PowerShellGet -ListAvailable).Version | Measure-Object -Maximum).Maximum.ToString()
+if ([System.Version]$CurrentPowerShellGetVersion -lt [System.Version]2.2.5)
 {
 	Write-Verbose -Message "Installing PowerShellGet $($LatestPowerShellGetModuleVersion)" -Verbose
 
-	Install-Module -Name PowerShellGet -AllowPrerelease -Force
+	Install-Module -Name PowerShellGet -Force
 
 	$PowerShellGetVersion = ((Get-Module -Name PowerShellGet -ListAvailable).Version | Measure-Object -Maximum).Maximum.ToString()
 	Import-Module -Name PowerShellGet -RequiredVersion $PowerShellGetVersion -Force
@@ -150,7 +139,7 @@ if (-not (Get-Module -Name Microsoft.PowerShell.PSResourceGet -ListAvailable -Er
 	$PowerShellGetVersion = ((Get-Module -Name PowerShellGet -ListAvailable).Version | Measure-Object -Maximum).Maximum.ToString()
 	Import-Module -Name PowerShellGet -RequiredVersion $PowerShellGetVersion -Force
 
-	Install-Module -Name Microsoft.PowerShell.PSResourceGet -AllowPrerelease -Force
+	Install-Module -Name Microsoft.PowerShell.PSResourceGet -Force
 
 	if ($env:WT_SESSION)
 	{
@@ -172,7 +161,7 @@ if ([System.Version]$CurrentPSResourceGetVersion -lt [System.Version]$LatestPSRe
 {
 	Write-Verbose -Message "Installing PSResourceGet $($LatestPSResourceGetVersion)" -Verbose
 
-	Install-Module -Name Microsoft.PowerShell.PSResourceGet -AllowPrerelease -Force
+	Install-Module -Name Microsoft.PowerShell.PSResourceGet -Force
 
 	if ($env:WT_SESSION)
 	{
