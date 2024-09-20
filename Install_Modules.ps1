@@ -60,7 +60,7 @@ if ([System.Version]$CurrentPackageManagementVersion -lt [System.Version]$Latest
 {
 	Write-Verbose -Message "Installing PackageManagement $($LatestPackageManagementVersion)" -Verbose
 
-	Update-Module -Name PackageManagement -RequiredVersion $LatestPackageManagementVersion -Force
+	Install-Module -Name PackageManagement -RequiredVersion $LatestPackageManagementVersion -Force
 
 	$PackageManagementVersion = ((Get-Module -Name PackageManagement -ListAvailable).Version | Measure-Object -Maximum).Maximum.ToString()
 	Import-Module -Name PackageManagement -RequiredVersion $PackageManagementVersion -Force
@@ -110,7 +110,7 @@ if ([System.Version]$CurrentPowerShellGetVersion -lt [System.Version]$LatestPowe
 {
 	Write-Verbose -Message "Installing PowerShellGet $($LatestPowerShellGetModuleVersion)" -Verbose
 
-	Update-Module -Name PowerShellGet -AllowPrerelease -Force
+	Install-Module -Name PowerShellGet -AllowPrerelease -Force
 
 	$PowerShellGetVersion = ((Get-Module -Name PowerShellGet -ListAvailable).Version | Measure-Object -Maximum).Maximum.ToString()
 	Import-Module -Name PowerShellGet -RequiredVersion $PowerShellGetVersion -Force
@@ -172,7 +172,7 @@ if ([System.Version]$CurrentPSResourceGetVersion -lt [System.Version]$LatestPSRe
 {
 	Write-Verbose -Message "Installing PSResourceGet $($LatestPSResourceGetVersion)" -Verbose
 
-	Update-Module -Name Microsoft.PowerShell.PSResourceGet -AllowPrerelease -Force
+	Install-Module -Name Microsoft.PowerShell.PSResourceGet -AllowPrerelease -Force
 
 	if ($env:WT_SESSION)
 	{
