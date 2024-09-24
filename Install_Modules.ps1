@@ -229,5 +229,5 @@ if ([System.Version]$CurrentPSReadlineVersion -lt $LatestPSReadLineVersion)
 }
 else
 {
-	"PSReadline $($LatestPSReadLineVersion) installed" -Verbose
+	Write-Verbose -Message "PSReadline $($LatestPSReadLineVersion) installed" -Verbose
 }
