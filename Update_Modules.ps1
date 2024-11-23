@@ -113,7 +113,7 @@ if ($CurrentPowerShellGetVersion -lt [System.Version]"2.2.5")
 	}
 	else
 	{
-		Write-Verbose -Message "PowerShellGet $PowerShellGetModuleVersion) & PackageManagement installed. Restart the PowerShell session, and re-run the script" -Verbose
+		Write-Verbose -Message "PowerShellGet $($PowerShellGetModuleVersion) & PackageManagement installed. Restart the PowerShell session, and re-run the script" -Verbose
 	}
 }
 #endregion PowerShellGet
